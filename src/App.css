@@ -1,0 +1,28 @@
+body {
+    background-color: rgb(238, 238, 238);
+    /* margin: 0 20px; */
+}
+
+h1 {
+    color: rgb(59, 31, 112);
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+footer{
+    bottom:0;
+    width: 100%;
+}
+
+#icon-navbar{
+    width: 27px;
+    height: 27px;
+}
+
+hr{
+    margin: 20px 0 40px 0;
+}
+
+#alert-sucess{
+    display: none
+}
