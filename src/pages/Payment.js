@@ -55,7 +55,7 @@ function NewPayment(){
             "state": data.state,
             "postCode": data.postCode
           },
-          "delayed": true
+          "delayed": false
         },
         "creditCardDetails":{
           "creditCardHash": await newCardHash()
@@ -69,7 +69,6 @@ function NewPayment(){
         saveCard(tokenization)
       }
 
-      
       create(paymentData).then((res) => {
         if(res.status === 200){
           removeCookies('chargeId')
@@ -84,7 +83,7 @@ function NewPayment(){
       <>
       <NavBarClient/>
         <h1>Checkout</h1>
-        <p>Passo 02 de 02 - Dados do Comprador</p>
+        <h4>Passo 02 de 02 - Dados do Comprador</h4>
         <form onSubmit={handleSubmit(handleCreatePayment)}>
           <div className="form-group">
             <label htmlFor="email">E-mail</label>
@@ -134,7 +133,10 @@ function NewPayment(){
             <label className="form-check-label" htmlFor="cardhHash">Salvar o cartão para futuras viagens</label>
             <input type="checkbox" className="form-check-input" id="cardHash"/>
           </div>
-            <button type='submit' className="btn btn-primary">Pagar</button>
+            <div>
+              <Link Link to="/charges">Voltar</Link>
+              <button type='submit' className="btn btn-primary">Pagar</button>
+            </div>
         </form>
           <Collapse in={open}>
           <Alert 
@@ -152,6 +154,7 @@ function NewPayment(){
 
 function RefundPayment(){
   const history = useHistory();
+  const [open, setOpen] = React.useState(false);
   const { register, handleSubmit } = useForm()
 
   async function paymentRefund(data){
@@ -161,7 +164,10 @@ function RefundPayment(){
     }
     
     await refund(id, amount).then((res) => {
-      if(res.status === 200) history.push('/admin')
+      if(res.status === 200) {
+        setOpen(true)
+        setTimeout(() => history.push('/admin'), 3000)
+      }
     })
   }
 
@@ -182,6 +188,14 @@ function RefundPayment(){
           </div>
           <button className="btn btn-primary" type='submit'>Enviar</button>
         </form>
+        <Collapse in={open}>
+          <Alert 
+            severity="success"
+          >
+            <AlertTitle>Sucesso</AlertTitle>
+            Reembolso realizado. O cliente receberá <strong>um e-mail de confirmação.</strong>
+          </Alert>
+          </Collapse>
         <p>Deseja voltar para Página Inicial? Clique <Link to="/admin">aqui </Link></p>
         <Footer/>
       </>
@@ -189,6 +203,7 @@ function RefundPayment(){
 };
 
 function ReqRefund(){
+  const [open, setOpen] = React.useState(false);
   const { register, handleSubmit } = useForm();
   const history = useHistory();
 
@@ -199,8 +214,9 @@ function ReqRefund(){
       }
     
     await reqRefund(res).then((res) => {
-      if(res.status===200){
-        if(res.status === 200) history.push('/admin')
+      if(res.status === 200){
+        setOpen(true)
+        setTimeout(() => history.push('/dashboard'), 4000)
       }
     })
   }
@@ -220,7 +236,14 @@ function ReqRefund(){
           </div>
           <button type="submit" className="btn btn-primary">Enviar</button>
       </form>
-      <p className="alert alert-warning" role="alert">Você receberá informações sobre o reembolso em <b>até 5 dias úteis</b>.</p>
+      <Collapse in={open}>
+          <Alert 
+            severity="warning"
+          >
+            <AlertTitle>Solicitação efetuada.</AlertTitle>
+            Você receberá, <strong>em até 05 dias úteis</strong>, a resposta da solicitação.
+          </Alert>
+          </Collapse>
       <p>Deseja voltar para Página Inicial? Clique <Link to="/dashboard">aqui </Link></p>
       <Footer/>
       </>
@@ -244,7 +267,7 @@ function Solicitation(){
       <NavBarAdmin/>
         <h1>Solicitações</h1>
         {list.map(req => 
-        <li className="list-group-item">
+        <li className="list-group-item" key={req._id}>
           <b>Código do Pagamento:</b> {req.paymentId}<br/>
           <b>Valor:</b> R${req.amount}
         </li>)}

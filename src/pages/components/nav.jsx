@@ -6,6 +6,7 @@ function NavBarClient(){
     function Dashboard() {
         history.push("/dashboard");
     }
+
     function Refund() {
         history.push("/payments/refund");
     }
@@ -31,6 +32,7 @@ function NavBarClient(){
                     </li>
                 </ul>
                 </div>
+                <p>Profile</p>
             </div>
         </nav>
     )

@@ -5,4 +5,9 @@ async function list(){
   return flights
 }
 
-export { list }
+async function create(obj){
+  const flights = await api.post('/flights', obj)
+  return flights
+}
+
+export { list, create }

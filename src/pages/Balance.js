@@ -9,13 +9,13 @@ export function CheckBalance(){
   const [balance, setBalance] = useState([]);
 
   async function getBalance(){
-  const { data } = await list();
-  setBalance(data);
+    const { data } = await list();
+    setBalance(data);
   }
 
-useEffect(() => {
-  getBalance();
-}, []);
+  useEffect(() => {
+    getBalance();
+  }, []);
 
   return(
     <>

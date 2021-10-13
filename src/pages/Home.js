@@ -9,9 +9,7 @@ export function Home(){
         <h1>
             No name Airlines
         </h1>
-        <Flights/>
-        <hr/>
-        <div className="row">
+        <div className="row" id='home'>
           <div className="col ">
             <h2>Se você é cliente:</h2>
             <h3>Primeira vez por aqui?</h3>
@@ -27,6 +25,9 @@ export function Home(){
             <p>Faça seu <Link to="/admin/login">Login</Link></p>
           </div>
         </div>
+        <hr/>
+        <Flights/>
+        <hr/>
         <Footer/>
       </>
     )

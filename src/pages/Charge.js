@@ -53,7 +53,7 @@ function NewCharge(){
     <>
     <NavBarClient/>
       <h1>Viagem do vôo {flightNumber}</h1>
-      <p>Passo 01 de 02 - Dados do Passageiro</p>
+      <h4>Passo 01 de 02 - Dados do Passageiro</h4>
       <form onSubmit={ newCharge }>
         <div className="form-group">
             <label htmlFor="name">Nome</label>
@@ -119,7 +119,7 @@ function ChargesList(){
           Listagem das Cobranças
         </h1>
           {charges.map(charge =>
-            <li className="list-group-item">
+            <li className="list-group-item" key={charge.id}>
               <b>Código Cobrança:</b> {charge.id}<br/>
               <b>Valor:</b> R${charge.amount}
               <b> Stautus:</b> {charge.status}
@@ -131,7 +131,7 @@ function ChargesList(){
     )
 }
 
-function CheckStatus(){
+function CheckStatusClient(){
     const [charge, setCharge] = useState([])
   
     async function getCharge(){
@@ -142,6 +142,7 @@ function CheckStatus(){
     
     return(
         <>
+        <NavBarClient/>
         <h1>Verificar Cobrança:</h1>
         <div className="form-group">
           <label htmlFor="id">Digite aqui o nome do ID da cobrança:</label>
@@ -153,10 +154,40 @@ function CheckStatus(){
           <li className="list-group-item"><b>Status:</b> {charge.status}</li>
           <li className="list-group-item"><b>Valor:</b> R$ {charge.amount}</li>
         </ul>
-        <p>Deseja voltar para Página Inicial? Clique <Link to="/">aqui </Link></p>
+        <p>Deseja voltar para Página Inicial? Clique <Link to="/dashboard">aqui </Link></p>
         <Footer/>
         </>
     )
 }
 
-export {  NewCharge, ChargesList, CheckStatus }
+function CheckStatusAdmin(){
+  const [charge, setCharge] = useState([])
+
+  async function getCharge(){
+    const id = document.getElementById('id').value;
+    const { data } = await check(id)
+    setCharge(data)
+  }
+  
+  return(
+      <>
+      <NavBarAdmin />
+      <h1>Verificar Cobrança:</h1>
+      <div className="form-group">
+        <label htmlFor="id">Digite aqui o nome do ID da cobrança:</label>
+        <input type='text' className="form-control" placeholder='chr_1234567890123456789' id='id' required/>
+        <button className="btn btn-primary" onClick={ getCharge }>Consultar status</button>
+      </div>
+      <ul className="list-group">
+        <li className="list-group-item"><b>ID:</b> {charge.id}</li>
+        <li className="list-group-item"><b>Status:</b> {charge.status}</li>
+        <li className="list-group-item"><b>Valor:</b> R$ {charge.amount}</li>
+      </ul>
+      <p>Deseja voltar para Página Inicial? Clique <Link to="/admin">aqui </Link></p>
+      <Footer/>
+      </>
+  )
+}
+
+
+export {  NewCharge, ChargesList, CheckStatusClient, CheckStatusAdmin }

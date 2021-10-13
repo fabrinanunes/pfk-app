@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import { NavBarClient, NavBarAdmin } from './components/nav'
 import { Footer } from './components/footer'
-import { Flights } from './Flights'
+import { Flights, NewFlight } from './Flights'
 
 function AdminDashboard() {
   const history = useHistory();
@@ -28,6 +28,14 @@ function AdminDashboard() {
 
   function handleSolicitations() {
     history.push("/admin/solicitations");
+  }
+
+  function handleFlights(){
+    history.push("/admin/flights");
+  }
+
+  function handleNewFlights(){
+    history.push("/admin/fligths/new");
   }
 
   return (
@@ -70,6 +78,19 @@ function AdminDashboard() {
             Ir
           </Button>
         </li>
+        <b>Vôos</b>
+        <li className="list-group-item">
+          Adicionar novo intinerário
+          <Button type="submit" onClick={handleNewFlights}>
+            Ir
+          </Button>
+        </li>
+        <li className="list-group-item">
+          Listar intinerários
+          <Button type="submit" onClick={handleFlights}>
+            Ir
+          </Button>
+        </li>
       </ul>
     <Footer/>
     </>
@@ -78,9 +99,6 @@ function AdminDashboard() {
 
 function ClientDashboard() {
   const history = useHistory();
-  function handleCapturePayment() {
-    history.push("/payments/capture");
-  }
 
   function handleRefund() {
     history.push("/payments/refund");
@@ -97,12 +115,6 @@ function ClientDashboard() {
       <Flights />
       <h3>O que deseja fazer?</h3>
       <ul className="list-group">
-          <li className="list-group-item">
-            Antecipar Parcela
-            <Button type="submit" onClick={handleCapturePayment}>
-              Ir
-            </Button>
-          </li>
           <li className="list-group-item">
             Solicitar Reembolso
             <Button type="submit" onClick={handleRefund}>

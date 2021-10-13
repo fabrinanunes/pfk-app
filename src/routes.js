@@ -10,16 +10,16 @@ import { LoginClient } from './pages/Login'
 
 //admin
 import { AdminDashboard } from './pages/Dashboard';
-import { ChargesList } from './pages/Charge';
-import { CheckStatus } from './pages/Charge';
+import { ChargesList, CheckStatusAdmin} from './pages/Charge';
 import { RefundPayment } from './pages/Payment';
 import { CheckBalance } from "./pages/Balance";
-import { Solicitation } from './pages/Payment'
+import { Solicitation } from './pages/Payment';
+import { NewFlight } from './pages/Flights';
 
 //cliente
 import { ClientDashboard } from './pages/Dashboard'
 import { Flights } from './pages/Flights';
-import { NewCharge } from './pages/Charge';
+import { NewCharge, CheckStatusClient } from './pages/Charge';
 import { NewPayment } from './pages/Payment';
 import { ReqRefund } from './pages/Payment';
 
@@ -34,7 +34,7 @@ function Routes() {
         <Route path="/dashboard" component={ClientDashboard} />
         <Route path="/flight-schedules" component={Flights} />
         <Route path="/charges" exact component={NewCharge} />
-        <Route path="/charges/check-charge" component={CheckStatus} />
+        <Route path="/charges/check-charge" component={CheckStatusClient} />
         <Route path="/payments/new-payment" component={NewPayment}/>
         <Route path="/payments/refund" component={ReqRefund} />
 
@@ -44,9 +44,11 @@ function Routes() {
         <Route path="/admin/" exact component={AdminDashboard} />
         <Route path="/admin/balance" component={CheckBalance} />
         <Route path="/admin/charges/list" component={ChargesList} />
-        <Route path="/admin/charges/check-charge" component={CheckStatus} />
+        <Route path="/admin/charges/check-charge" component={CheckStatusAdmin} />
         <Route path="/admin/payments/refund" component={RefundPayment}/>
         <Route path='/admin/solicitations' component={Solicitation}/>
+        <Route path='/admin/flights/' component={Flights}/>
+        <Route path='/admin/fligths/new' component={NewFlight}/>
       </Switch>
     </BrowserRouter>
     );
