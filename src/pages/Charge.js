@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { listAll, check, create } from '../services/charges';
 import { NavBarClient, NavBarAdmin } from './components/nav'
 import { Footer } from './components/footer'
+import { postCode } from "../services/cep";
 
 function NewCharge(){
   const history = useHistory();
@@ -14,10 +15,11 @@ function NewCharge(){
 
   const flightNumber = useCookies('flight')[0].flight;
   const amount = useCookies('amount')[0].amount
+ 
 
   async function newCharge(event){
     event.preventDefault();
-    
+
     const chargeData = {
       "charge": {
         "description": flightNumber,
@@ -30,12 +32,12 @@ function NewCharge(){
         "document": event.target.document.value,
         "email": event.target.email.value,
         "address": {
-          "street": event.target.street.value,
+          "street": event.target.value.street,
           "number": event.target.number.value,
-          "city": event.target.city.value,
-          "state": event.target.state.value,
-          "postCode": event.target.postCode.value
-      }
+          "city": event.target.value.city,
+          "state": event.target.value.state,
+          "postCode": event.target.value.postCod
+        }        
       }
     }
     
@@ -54,7 +56,7 @@ function NewCharge(){
     <NavBarClient/>
       <h1>Viagem do vôo {flightNumber}</h1>
       <h4>Passo 01 de 02 - Dados do Passageiro</h4>
-      <form onSubmit={ newCharge }>
+      <form>
         <div className="form-group">
             <label htmlFor="name">Nome</label>
             <input type='text' placeholder='Nome Completo' id='name' className="form-control" required/>
@@ -67,6 +69,10 @@ function NewCharge(){
         <p>Dados de Contato</p>
             <label htmlFor="email">E-mail</label>
             <input type='mail' placeholder='E-mail' id='email' className="form-control" required/>
+        </div>
+        <div className="form-group">
+            <label htmlFor="postCode">CEP</label>
+            <input type='text' placeholder='88000-000' id='postCode' className="form-control" required/>
         </div>
         <div className="form-group">
             <label htmlFor="street">Endereço</label>
@@ -85,14 +91,10 @@ function NewCharge(){
             <input type='text' placeholder='Sigla UF' id='state' maxLength="2" className="form-control" required/>
         </div>
         <div className="form-group">
-            <label htmlFor="postCode">CEP</label>
-            <input type='text' placeholder='88000-000' id='postCode' className="form-control" required/>
-        </div>
-        <div className="form-group">
           <label htmlFor="dueDate">Data de Vencimento</label>
           <input type='date' id='dueDate' className="form-control"/>
         </div>
-          <button className="btn btn-primary" type='submit'>Ir para Checkout</button>
+          <button className="btn btn-primary" type='submit' onClick={ newCharge }>Ir para Checkout</button>
       </form>
       <p>Deseja voltar para Página Inicial? Clique <Link to="/dashboard">aqui </Link></p>
       <Footer/>
@@ -188,6 +190,5 @@ function CheckStatusAdmin(){
       </>
   )
 }
-
 
 export {  NewCharge, ChargesList, CheckStatusClient, CheckStatusAdmin }

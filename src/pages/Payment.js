@@ -9,7 +9,7 @@ import AlertTitle from '@mui/material/AlertTitle';
 import Collapse from '@mui/material/Collapse';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import { create, saveCard, refund, reqRefund, listReq } from '../services/payments';
+import { create, saveCard, refund, reqRefund, listUserReq, listReq } from '../services/payments';
 import { NavBarClient, NavBarAdmin } from './components/nav';
 import { Footer } from './components/footer';
 
@@ -134,7 +134,7 @@ function NewPayment(){
             <input type="checkbox" className="form-check-input" id="cardHash"/>
           </div>
             <div>
-              <Link Link to="/charges">Voltar</Link>
+              <Link to="/charges">Voltar</Link>
               <button type='submit' className="btn btn-primary">Pagar</button>
             </div>
         </form>
@@ -203,39 +203,43 @@ function RefundPayment(){
 };
 
 function ReqRefund(){
+  const [list, setList] = useState([]);
   const [open, setOpen] = React.useState(false);
-  const { register, handleSubmit } = useForm();
   const history = useHistory();
 
-  async function RefundPayment(data){
-      const res = {
-          "paymentId": data.paymentId,
-          "amount": data.amount
-      }
+  async function getList(){
+    const { data } = await listUserReq();
+    setList(data);
+  }
+
+  useEffect(() => {
+    getList();
+  }, []);
+  
+  async function paymentRefund(event){
+    const reqData = {
+      "paymentId": event.target.getAttribute("data-id"),
+      "amount": event.target.getAttribute("data-price")
+    }
     
-    await reqRefund(res).then((res) => {
+    await reqRefund(reqData).then((res) => {
       if(res.status === 200){
         setOpen(true)
         setTimeout(() => history.push('/dashboard'), 4000)
       }
     })
   }
-
+  
   return(
       <>
       <NavBarClient/>
       <h1>Solicitar Reembolso</h1>
-      <form onSubmit={handleSubmit(RefundPayment)}>
-          <div className="form-group col-md-3">
-              <label htmlFor="paymentId">ID da Transação Bancária</label>
-              <input {...register('paymentId')} type="text" className="form-control" id="paymentId" placeholder="pay_12345678901234567890" required/>
-          </div>
-          <div className="form-group col-md-3">
-              <label htmlFor="amount">Valor a ser pago</label>
-              <input {...register('amount')} type="number" className="form-control" id="amount" placeholder="R$ 0,00" min="1" step="0.01" required/>
-          </div>
-          <button type="submit" className="btn btn-primary">Enviar</button>
-      </form>
+      {list.map(req => 
+        <li className="list-group-item" key={req._id}>
+          <b>Código do Pagamento:</b> {req.paymentId} <br/>
+          <b>Valor:</b> R$ {req.amount} <br/>
+          <button type="submit" className="btn btn-primary" onClick={paymentRefund} data-id={req.paymentId} data-price={req.amount}>Solicitar Reembolso</button>
+        </li>)}
       <Collapse in={open}>
           <Alert 
             severity="warning"
@@ -268,6 +272,7 @@ function Solicitation(){
         <h1>Solicitações</h1>
         {list.map(req => 
         <li className="list-group-item" key={req._id}>
+          <b>Código do Solicitante:</b> {req.user} <br/>
           <b>Código do Pagamento:</b> {req.paymentId}<br/>
           <b>Valor:</b> R${req.amount}
         </li>)}

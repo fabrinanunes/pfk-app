@@ -20,9 +20,14 @@ async function reqRefund(obj){
     return refund;
 };
 
-async function listReq(obj){
-    const listAll = await api.get('/admin/solicitation', obj)
-    return listAll
+async function listUserReq(){
+    const list = await api.get('/profile/payments')
+    return list
+}
+
+async function listReq(){
+    const list = await api.get('/admin/solicitation')
+    return list
 };
 
-export { create, refund, saveCard, reqRefund, listReq }
+export { create, refund, saveCard, reqRefund, listUserReq, listReq }
