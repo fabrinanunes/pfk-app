@@ -5,6 +5,8 @@ import { useCookies } from "react-cookie";
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { listAll, check, create } from '../services/charges';
+import { listUserReq } from '../services/payments';
+
 import { NavBarClient, NavBarAdmin } from './components/nav'
 import { Footer } from './components/footer'
 import { postCode } from "../services/cep";
@@ -134,10 +136,21 @@ function ChargesList(){
 }
 
 function CheckStatusClient(){
-    const [charge, setCharge] = useState([])
+    const [charge, setCharge] = useState([]);
+    const [list, setList] = useState([]);
   
-    async function getCharge(){
-      const id = document.getElementById('id').value;
+    async function getList(){
+      const { data } = await listUserReq();
+      setList(data);
+    }
+  
+    useEffect(() => {
+      getList();
+    }, []);
+
+    async function getCharge(event){
+      const id = event.target.getAttribute("data-id");
+      console.log(id)
       const { data } = await check(id)
       setCharge(data)
     }
@@ -146,11 +159,13 @@ function CheckStatusClient(){
         <>
         <NavBarClient/>
         <h1>Verificar Cobrança:</h1>
-        <div className="form-group">
-          <label htmlFor="id">Digite aqui o nome do ID da cobrança:</label>
-          <input type='text' className="form-control" placeholder='chr_1234567890123456789' id='id' required/>
-          <button className="btn btn-primary" onClick={ getCharge }>Consultar status</button>
-        </div>
+        {list.map(req => 
+        <li className="list-group-item" key={req._id}>
+          <b>Código do Pagamento:</b> {req.paymentId} <br/>
+          <b>Valor:</b> R$ {req.amount} <br/>
+          <button type="submit" className="btn btn-primary" onClick={getCharge} data-id={req.chargeId}>Verificar status</button>
+        </li>)}
+        <br/>
         <ul className="list-group">
           <li className="list-group-item"><b>ID:</b> {charge.id}</li>
           <li className="list-group-item"><b>Status:</b> {charge.status}</li>

@@ -25,7 +25,7 @@ function Flights(){
   
     async function getFlights(){
       const { data } = await list();
-      setFlights(data)
+      setFlights([data])
     };
 
     useEffect(() => {
