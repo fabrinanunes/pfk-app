@@ -5,8 +5,11 @@ import { useCookies } from "react-cookie";
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { listAll, check, create } from '../services/charges';
+import { listUserReq } from '../services/payments';
+
 import { NavBarClient, NavBarAdmin } from './components/nav'
 import { Footer } from './components/footer'
+import { postCode } from "../services/cep";
 
 function NewCharge(){
   const history = useHistory();
@@ -14,10 +17,11 @@ function NewCharge(){
 
   const flightNumber = useCookies('flight')[0].flight;
   const amount = useCookies('amount')[0].amount
+ 
 
   async function newCharge(event){
     event.preventDefault();
-    
+
     const chargeData = {
       "charge": {
         "description": flightNumber,
@@ -30,12 +34,12 @@ function NewCharge(){
         "document": event.target.document.value,
         "email": event.target.email.value,
         "address": {
-          "street": event.target.street.value,
+          "street": event.target.value.street,
           "number": event.target.number.value,
-          "city": event.target.city.value,
-          "state": event.target.state.value,
-          "postCode": event.target.postCode.value
-      }
+          "city": event.target.value.city,
+          "state": event.target.value.state,
+          "postCode": event.target.value.postCod
+        }        
       }
     }
     
@@ -54,7 +58,7 @@ function NewCharge(){
     <NavBarClient/>
       <h1>Viagem do vôo {flightNumber}</h1>
       <h4>Passo 01 de 02 - Dados do Passageiro</h4>
-      <form onSubmit={ newCharge }>
+      <form>
         <div className="form-group">
             <label htmlFor="name">Nome</label>
             <input type='text' placeholder='Nome Completo' id='name' className="form-control" required/>
@@ -67,6 +71,10 @@ function NewCharge(){
         <p>Dados de Contato</p>
             <label htmlFor="email">E-mail</label>
             <input type='mail' placeholder='E-mail' id='email' className="form-control" required/>
+        </div>
+        <div className="form-group">
+            <label htmlFor="postCode">CEP</label>
+            <input type='text' placeholder='88000-000' id='postCode' className="form-control" required/>
         </div>
         <div className="form-group">
             <label htmlFor="street">Endereço</label>
@@ -85,14 +93,10 @@ function NewCharge(){
             <input type='text' placeholder='Sigla UF' id='state' maxLength="2" className="form-control" required/>
         </div>
         <div className="form-group">
-            <label htmlFor="postCode">CEP</label>
-            <input type='text' placeholder='88000-000' id='postCode' className="form-control" required/>
-        </div>
-        <div className="form-group">
           <label htmlFor="dueDate">Data de Vencimento</label>
           <input type='date' id='dueDate' className="form-control"/>
         </div>
-          <button className="btn btn-primary" type='submit'>Ir para Checkout</button>
+          <button className="btn btn-primary" type='submit' onClick={ newCharge }>Ir para Checkout</button>
       </form>
       <p>Deseja voltar para Página Inicial? Clique <Link to="/dashboard">aqui </Link></p>
       <Footer/>
@@ -132,10 +136,21 @@ function ChargesList(){
 }
 
 function CheckStatusClient(){
-    const [charge, setCharge] = useState([])
+    const [charge, setCharge] = useState([]);
+    const [list, setList] = useState([]);
   
-    async function getCharge(){
-      const id = document.getElementById('id').value;
+    async function getList(){
+      const { data } = await listUserReq();
+      setList(data);
+    }
+  
+    useEffect(() => {
+      getList();
+    }, []);
+
+    async function getCharge(event){
+      const id = event.target.getAttribute("data-id");
+      console.log(id)
       const { data } = await check(id)
       setCharge(data)
     }
@@ -144,11 +159,13 @@ function CheckStatusClient(){
         <>
         <NavBarClient/>
         <h1>Verificar Cobrança:</h1>
-        <div className="form-group">
-          <label htmlFor="id">Digite aqui o nome do ID da cobrança:</label>
-          <input type='text' className="form-control" placeholder='chr_1234567890123456789' id='id' required/>
-          <button className="btn btn-primary" onClick={ getCharge }>Consultar status</button>
-        </div>
+        {list.map(req => 
+        <li className="list-group-item" key={req._id}>
+          <b>Código do Pagamento:</b> {req.paymentId} <br/>
+          <b>Valor:</b> R$ {req.amount} <br/>
+          <button type="submit" className="btn btn-primary" onClick={getCharge} data-id={req.chargeId}>Verificar status</button>
+        </li>)}
+        <br/>
         <ul className="list-group">
           <li className="list-group-item"><b>ID:</b> {charge.id}</li>
           <li className="list-group-item"><b>Status:</b> {charge.status}</li>
@@ -188,6 +205,5 @@ function CheckStatusAdmin(){
       </>
   )
 }
-
 
 export {  NewCharge, ChargesList, CheckStatusClient, CheckStatusAdmin }

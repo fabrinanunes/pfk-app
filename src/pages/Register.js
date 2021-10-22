@@ -61,6 +61,11 @@ function NewClient(){
                                 <TextField {...register('password')} required fullWidth name="password" label="Senha" type="password" id="password" autoComplete="new-password"/>
                             </Grid>
                         </Grid>
+                        <div className="form-check">
+                        <label className="form-check-label" htmlFor="newsletter">Aceito receber emails informativos</label>
+                        <input type="checkbox" className="form-check-input" id="newsletter"/>
+                        </div>
+                        <p>Ao se registrar, eu concordo com os <Link to='/privacy-policy'>Termos de Uso e Política de Privacidade</Link></p>
                         <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                         Cadastrar-se
                         </Button>

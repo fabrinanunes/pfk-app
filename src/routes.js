@@ -6,7 +6,7 @@ import { Home } from "./pages/Home";
 import { NewAdmin } from './pages/Register';
 import { LoginAdmin } from "./pages/Login";
 import { NewClient } from './pages/Register';
-import { LoginClient } from './pages/Login'
+import { LoginClient } from './pages/Login';
 
 //admin
 import { AdminDashboard } from './pages/Dashboard';
@@ -22,6 +22,7 @@ import { Flights } from './pages/Flights';
 import { NewCharge, CheckStatusClient } from './pages/Charge';
 import { NewPayment } from './pages/Payment';
 import { ReqRefund } from './pages/Payment';
+import { PrivacyPolicy } from './pages/PrivacyPolicy'
 
 function Routes() {
     return(
@@ -37,6 +38,7 @@ function Routes() {
         <Route path="/charges/check-charge" component={CheckStatusClient} />
         <Route path="/payments/new-payment" component={NewPayment}/>
         <Route path="/payments/refund" component={ReqRefund} />
+        <Route path="/privacy-policy" component={PrivacyPolicy} />
 
         {/* admin */}
         <Route path="/admin/register" component={NewAdmin} />
