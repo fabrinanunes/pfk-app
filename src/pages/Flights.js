@@ -22,10 +22,11 @@ function Flights(){
     const history = useHistory();
     const [cookies, setCookies] = useCookies([]);
     const [flights, setFlights] = useState([]);
-  
+    
+    console.log(flights)
     async function getFlights(){
       const { data } = await list();
-      setFlights([data])
+      setFlights(data)
     };
 
     useEffect(() => {
