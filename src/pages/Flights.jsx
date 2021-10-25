@@ -25,9 +25,12 @@ function Flights(){
 
     async function getFlights(){
       const { data } = await list();
+      console.log('flight data', data)
       setFlights(data)
     };
 
+    console.log(flights)
+    
     useEffect(() => {
         getFlights()
     }, []);

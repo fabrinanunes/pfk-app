@@ -106,9 +106,11 @@ function NewCharge(){
 
 function ChargesList(){
     const [charges, setCharges] = useState([]);
+    console.log('charges', charges)
 
     async function getCharges(){
       const { data } = await listAll();
+      console.log('charges data', data)
       setCharges(data)
     };
   
@@ -141,9 +143,11 @@ function CheckStatusClient(){
     
     async function getList(){
       const { data } = await listUserReq();
+      console.log('status', data)
       setList(data);
     }
-  
+    console.log('list', list)
+    
     useEffect(() => {
       getList();
     }, []);

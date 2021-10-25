@@ -7,10 +7,11 @@ import { Footer } from './components/footer'
 
 export function CheckBalance(){
   const [balance, setBalance] = useState([]);
+  console.log('balance', balance)
 
   async function getBalance(){
     const { data } = await list();
-    console.log(data)
+    console.log('getBalance data', data)
     setBalance(data);
   }
 

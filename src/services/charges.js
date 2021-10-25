@@ -7,11 +7,13 @@ async function create(obj){
 
 async function listAll(){
     const charges = await api.get('/admin/charges')
+    console.log(charges)
     return charges
 }
 
 async function check(id){
     const charge = await api.get(`/charges/${id}`)
+    console.log(charge)
     return charge
 }
 
