@@ -10,6 +10,7 @@ export function CheckBalance(){
 
   async function getBalance(){
     const { data } = await list();
+    console.log(data)
     setBalance(data);
   }
 

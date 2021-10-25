@@ -236,7 +236,8 @@ function ReqRefund(){
       <h1>Solicitar Reembolso</h1>
       {list.map(req => 
         <li className="list-group-item" key={req._id}>
-          <b>Código do Pagamento:</b> {req.paymentId} <br/>
+          <b>Código do Pagamento:</b> {req._id} <br/>
+          <b>Vôo:</b> {req.flight} <br/>
           <b>Valor:</b> R$ {req.amount} <br/>
           <button type="submit" className="btn btn-primary" onClick={paymentRefund} data-id={req.paymentId} data-price={req.amount}>Solicitar Reembolso</button>
         </li>)}

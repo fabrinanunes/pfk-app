@@ -124,7 +124,7 @@ function ChargesList(){
         </h1>
           {charges.map(charge =>
             <li className="list-group-item" key={charge.id}>
-              <b>Código Cobrança:</b> {charge.id}<br/>
+              <b>Código Cobrança:</b> {charge._id}<br/>
               <b>Valor:</b> R${charge.amount}
               <b> Stautus:</b> {charge.status}
               <b> Data de Pagamento:</b> {charge.dueDate}
@@ -138,7 +138,7 @@ function ChargesList(){
 function CheckStatusClient(){
     const [charge, setCharge] = useState([]);
     const [list, setList] = useState([]);
-  
+    
     async function getList(){
       const { data } = await listUserReq();
       setList(data);
@@ -150,7 +150,6 @@ function CheckStatusClient(){
 
     async function getCharge(event){
       const id = event.target.getAttribute("data-id");
-      console.log(id)
       const { data } = await check(id)
       setCharge(data)
     }
@@ -161,16 +160,12 @@ function CheckStatusClient(){
         <h1>Verificar Cobrança:</h1>
         {list.map(req => 
         <li className="list-group-item" key={req._id}>
-          <b>Código do Pagamento:</b> {req.paymentId} <br/>
+          <b>Código:</b> {req._id} <br/>
+          <b>Vôo:</b> {req.flight} <br/>
           <b>Valor:</b> R$ {req.amount} <br/>
+          <b>Status:</b> {charge.status} <br/>
           <button type="submit" className="btn btn-primary" onClick={getCharge} data-id={req.chargeId}>Verificar status</button>
         </li>)}
-        <br/>
-        <ul className="list-group">
-          <li className="list-group-item"><b>ID:</b> {charge.id}</li>
-          <li className="list-group-item"><b>Status:</b> {charge.status}</li>
-          <li className="list-group-item"><b>Valor:</b> R$ {charge.amount}</li>
-        </ul>
         <p>Deseja voltar para Página Inicial? Clique <Link to="/dashboard">aqui </Link></p>
         <Footer/>
         </>
