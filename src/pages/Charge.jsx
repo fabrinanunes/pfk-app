@@ -18,7 +18,6 @@ function NewCharge(){
   const flightNumber = useCookies('flight')[0].flight;
   const amount = useCookies('amount')[0].amount
  
-
   async function newCharge(event){
     event.preventDefault();
 
@@ -26,7 +25,6 @@ function NewCharge(){
       "charge": {
         "description": flightNumber,
         "amount": amount,
-        "dueDate": event.target.dueDate.value,
         "paymentTypes": ['CREDIT_CARD'],
       },
       "billing": {
@@ -34,20 +32,21 @@ function NewCharge(){
         "document": event.target.document.value,
         "email": event.target.email.value,
         "address": {
-          "street": event.target.value.street,
+          "street": event.target.street.value,
           "number": event.target.number.value,
-          "city": event.target.value.city,
-          "state": event.target.value.state,
-          "postCode": event.target.value.postCod
-        }        
+          "city": event.target.city.value,
+          "state": event.target.state.value,
+          "postCode": event.target.postCode.value
+        }
       }
     }
-    
+
     create(chargeData).then((res) => {
       if (res.status === 200){
         const chargeId = res.data[0].id
         setCookies('chargeId', chargeId, { path: '/' })
         removeCookies('flight')
+        removeCookies('amount')
         history.push('/payments/new-payment')
       }
     })
@@ -57,8 +56,8 @@ function NewCharge(){
     <>
     <NavBarClient/>
       <h1>Viagem do vôo {flightNumber}</h1>
-      <h4>Passo 01 de 02 - Dados do Passageiro</h4>
-      <form>
+      <p>Passo 01 de 02 - Dados do Passageiro</p>
+      <form onSubmit={ newCharge }>
         <div className="form-group">
             <label htmlFor="name">Nome</label>
             <input type='text' placeholder='Nome Completo' id='name' className="form-control" required/>
@@ -92,11 +91,7 @@ function NewCharge(){
             <label htmlFor="state">Estado</label>
             <input type='text' placeholder='Sigla UF' id='state' maxLength="2" className="form-control" required/>
         </div>
-        <div className="form-group">
-          <label htmlFor="dueDate">Data de Vencimento</label>
-          <input type='date' id='dueDate' className="form-control"/>
-        </div>
-          <button className="btn btn-primary" type='submit' onClick={ newCharge }>Ir para Checkout</button>
+          <button className="btn btn-primary" type='submit'>Ir para Checkout</button>
       </form>
       <p>Deseja voltar para Página Inicial? Clique <Link to="/dashboard">aqui </Link></p>
       <Footer/>
@@ -106,11 +101,9 @@ function NewCharge(){
 
 function ChargesList(){
     const [charges, setCharges] = useState([]);
-    console.log('charges', charges)
 
     async function getCharges(){
       const { data } = await listAll();
-      console.log('charges data', data)
       setCharges(data)
     };
   
@@ -143,10 +136,8 @@ function CheckStatusClient(){
     
     async function getList(){
       const { data } = await listUserReq();
-      console.log('status', data)
       setList(data);
     }
-    console.log('list', list)
     
     useEffect(() => {
       getList();
