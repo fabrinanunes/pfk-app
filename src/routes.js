@@ -15,6 +15,7 @@ import { RefundPayment } from './pages/Payment';
 import { CheckBalance } from "./pages/Balance";
 import { Solicitation } from './pages/Payment';
 import { NewFlight } from './pages/Flights';
+import { ListFlightsAdmin } from './pages/Flights';
 
 //cliente
 import { ClientDashboard } from './pages/Dashboard'
@@ -49,7 +50,7 @@ function Routes() {
         <Route path="/admin/charges/check-charge" component={CheckStatusAdmin} />
         <Route path="/admin/payments/refund" component={RefundPayment}/>
         <Route path='/admin/solicitations' component={Solicitation}/>
-        <Route path='/admin/flights/' component={Flights}/>
+        <Route path='/admin/flights/' component={ListFlightsAdmin}/>
         <Route path='/admin/fligths/new' component={NewFlight}/>
       </Switch>
     </BrowserRouter>

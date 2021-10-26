@@ -64,6 +64,14 @@ function NavBarAdmin(){
     function ClientsReq() {
         history.push("/admin/solicitations");
     }
+
+    function ListFlights() {
+        history.push("/admin/flights");
+    }
+    
+    function NewFlight() {
+        history.push("/admin/flights/new");
+    }
     
     return(
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -88,6 +96,12 @@ function NavBarAdmin(){
                     </li>
                     <li className="nav-item">
                         <button className="nav-link btn btn-link" onClick={ClientsReq}>Solicitações</button>
+                    </li>
+                    <li className="nav-item">
+                        <button className="nav-link btn btn-link" onClick={ListFlights}>Intinerários</button>
+                    </li>
+                    <li className="nav-item">
+                        <button className="nav-link btn btn-link" onClick={NewFlight}>Adicionar Intinerário</button>
                     </li>
                 </ul>
                 </div>

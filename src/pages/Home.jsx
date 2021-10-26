@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Footer } from './components/footer';
-import { Flights } from './Flights'
+import { ListFlights } from './Flights'
 
 export function Home(){
     
@@ -26,7 +26,7 @@ export function Home(){
           </div>
         </div>
         <hr/>
-        <Flights/>
+        <ListFlights/>
         <hr/>
         <Footer/>
       </>

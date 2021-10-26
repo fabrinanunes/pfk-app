@@ -150,4 +150,89 @@ function NewFlight(){
     )
 };
 
-export { Flights, NewFlight }
+function ListFlights(){
+    const [flights, setFlights] = useState([]);
+
+    async function getFlights(){
+      const { data } = await list();
+      setFlights(data)
+    };
+    
+    useEffect(() => {
+        getFlights()
+    }, []);
+
+    return(
+        <>
+        <h3>Vôos disponíveis</h3>
+        <p><Link to='/register'>Registre-se</Link> ou faça <Link to="/login">login</Link> para realizar a compra</p>
+            {flights.map(flight => 
+                <li className="list-group-item" key={flight._id}>
+                    <Card sx={{ minWidth: 275 }}>
+                        <CardContent>
+                            <Typography>
+                                <b>Vôo:</b> {flight.flight}
+                            </Typography>
+                            <Typography>
+                                <b>Partida:</b> {flight.departureAirport} <br/>
+                                <b>Data:</b> {flight.depatureDate} - {flight.depatureTime} <br/>
+                            </Typography>
+                            <Typography>
+                                <b>Destino:</b> {flight.arrivalAirport} <br/>
+                                <b>Data:</b> {flight.arrivalDate} - {flight.arrivalTime} <br/>
+                            </Typography>
+                            <Typography>
+                                <b>Preço:</b> {flight.amount} <br/>
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                </li>
+            )}
+        </>
+    )
+}
+
+function ListFlightsAdmin(){
+    const [flights, setFlights] = useState([]);
+
+    async function getFlights(){
+      const { data } = await list();
+      setFlights(data)
+    };
+    
+    useEffect(() => {
+        getFlights()
+    }, []);
+
+    return(
+        <>
+            <NavBarAdmin/>
+            <h3>Vôos disponíveis</h3>
+                {flights.map(flight => 
+                    <li className="list-group-item" key={flight._id}>
+                        <Card sx={{ minWidth: 275 }}>
+                            <CardContent>
+                                <Typography>
+                                    <b>Vôo:</b> {flight.flight}
+                                </Typography>
+                                <Typography>
+                                    <b>Partida:</b> {flight.departureAirport} <br/>
+                                    <b>Data:</b> {flight.depatureDate} - {flight.depatureTime} <br/>
+                                </Typography>
+                                <Typography>
+                                    <b>Destino:</b> {flight.arrivalAirport} <br/>
+                                    <b>Data:</b> {flight.arrivalDate} - {flight.arrivalTime} <br/>
+                                </Typography>
+                                <Typography>
+                                    <b>Preço:</b> {flight.amount} <br/>
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </li>
+                )}
+            <Footer/>
+            </>
+    )
+}
+
+export { Flights, NewFlight, ListFlights, ListFlightsAdmin }
