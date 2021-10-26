@@ -18,19 +18,19 @@ async function saveCard(obj){
 };
 
 async function reqRefund(obj){
-    const refund = await api.post('/payments/refund', obj);
+    const refund = await api.post('payments/refund', obj);
     console.log(refund)
     return refund;
 };
 
 async function listUserReq(){
-    const list = await api.get('/profile/payments')
+    const list = await api.get('profile/payments')
     console.log(list)
     return list
 }
 
 async function listReq(){
-    const list = await api.get('/admin/solicitation')
+    const list = await api.get('admin/solicitation')
     console.log(list)
     return list
 };
