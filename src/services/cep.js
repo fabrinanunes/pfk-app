@@ -1,7 +1,7 @@
 import api from './api';
 
-async function postCode(obj){
-    const postCode = await api.post('postCode', obj)
+async function postCode(cep){
+    const postCode = await api.post('postCode', cep)
     return postCode
 }
 

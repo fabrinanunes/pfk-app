@@ -3,10 +3,10 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Home } from "./pages/Home";
 
 //login & register
-import { NewAdmin } from './pages/Register';
-import { LoginAdmin } from "./pages/Login";
-import { NewClient } from './pages/Register';
-import { LoginClient } from './pages/Login';
+import { NewAdmin } from './pages/Login-Register';
+import { LoginAdmin } from "./pages/Login-Register";
+import { NewClient } from './pages/Login-Register';
+import { LoginClient } from './pages/Login-Register';
 
 //admin
 import { AdminDashboard } from './pages/Dashboard';
@@ -23,7 +23,8 @@ import { Flights } from './pages/Flights';
 import { NewCharge, CheckStatusClient } from './pages/Charge';
 import { NewPayment } from './pages/Payment';
 import { ReqRefund } from './pages/Payment';
-import { PrivacyPolicy } from './pages/PrivacyPolicy'
+import { PrivacyPolicy } from './pages/PrivacyPolicy';
+import { Profile } from './pages/Profile';
 
 function Routes() {
     return(
@@ -40,18 +41,19 @@ function Routes() {
         <Route path="/payments/new-payment" component={NewPayment}/>
         <Route path="/payments/refund" component={ReqRefund} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />
+        <Route path="/profile" component={Profile} />
 
         {/* admin */}
         <Route path="/admin/register" component={NewAdmin} />
-        <Route path="/admin/login" component={LoginAdmin} />
-        <Route path="/admin/" exact component={AdminDashboard} />
+        <Route path="/admin" exact component={LoginAdmin} />
+        <Route path="/admin/dashboard" component={AdminDashboard} />
         <Route path="/admin/balance" component={CheckBalance} />
         <Route path="/admin/charges/list" component={ChargesList} />
         <Route path="/admin/charges/check-charge" component={CheckStatusAdmin} />
         <Route path="/admin/payments/refund" component={RefundPayment}/>
         <Route path='/admin/solicitations' component={Solicitation}/>
-        <Route path='/admin/flights/' component={ListFlightsAdmin}/>
-        <Route path='/admin/fligths/new' component={NewFlight}/>
+        <Route path='/admin/flights/' exact component={ListFlightsAdmin}/>
+        <Route path='/admin/flights/new' component={NewFlight}/>
       </Switch>
     </BrowserRouter>
     );

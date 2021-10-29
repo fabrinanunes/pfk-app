@@ -24,7 +24,7 @@ export function CheckBalance(){
       <ul className="list-group">Seu saldo é de:
         <li className="list-group-item">R$ {balance}</li>
       </ul>
-      <p>Voltar para o <Link to="/admin">Dashboard</Link></p>
+      <p>Voltar para o <Link to="/admin/dashboard">Dashboard</Link></p>
       <Footer/>
     </>
   )

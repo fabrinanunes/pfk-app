@@ -17,6 +17,18 @@ function NewCharge(){
 
   const flightNumber = useCookies('flight')[0].flight;
   const amount = useCookies('amount')[0].amount
+
+  function getCEP(event){
+    event.preventDefault();
+    const cepData = document.getElementById('postCode').value;
+    const cep = { cep: cepData };
+
+    postCode(cep).then((res) => {
+      document.getElementById('street').value = res.data.end;
+      document.getElementById('city').value = res.data.cidade;
+      document.getElementById('state').value = res.data.uf;
+    })
+  }
  
   async function newCharge(event){
     event.preventDefault();
@@ -40,13 +52,13 @@ function NewCharge(){
         }
       }
     }
-
+    console.log(chargeData)
     create(chargeData).then((res) => {
       if (res.status === 200){
         const chargeId = res.data[0].id
         setCookies('chargeId', chargeId, { path: '/' })
-        removeCookies('flight')
-        removeCookies('amount')
+        removeCookies('flight');
+        removeCookies('amount');
         history.push('/payments/new-payment')
       }
     })
@@ -73,7 +85,7 @@ function NewCharge(){
         </div>
         <div className="form-group">
             <label htmlFor="postCode">CEP</label>
-            <input type='text' placeholder='88000-000' id='postCode' className="form-control" required/>
+            <input type='text' placeholder='88000-000' id='postCode' className="form-control" onBlur={getCEP} required/>
         </div>
         <div className="form-group">
             <label htmlFor="street">Endereço</label>
@@ -124,7 +136,7 @@ function ChargesList(){
               <b> Stautus:</b> {charge.status}
               <b> Data de Pagamento:</b> {charge.dueDate}
             </li>)}
-        <p>Voltar para o <Link to="/admin">Dashboard</Link></p>
+        <p>Voltar para o <Link to="/admin/dashboard">Dashboard</Link></p>
         <Footer/>
       </>
     )
@@ -190,7 +202,7 @@ function CheckStatusAdmin(){
         <li className="list-group-item"><b>Status:</b> {charge.status}</li>
         <li className="list-group-item"><b>Valor:</b> R$ {charge.amount}</li>
       </ul>
-      <p>Deseja voltar para Página Inicial? Clique <Link to="/admin">aqui </Link></p>
+      <p>Deseja voltar para Página Inicial? Clique <Link to="/admin/dashboard">aqui </Link></p>
       <Footer/>
       </>
   )

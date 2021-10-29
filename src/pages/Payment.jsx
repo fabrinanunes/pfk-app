@@ -166,7 +166,7 @@ function RefundPayment(){
     await refund(id, amount).then((res) => {
       if(res.status === 200) {
         setOpen(true)
-        setTimeout(() => history.push('/admin'), 3000)
+        setTimeout(() => history.push('/admin/dashboard'), 3000)
       }
     })
   }
@@ -196,7 +196,7 @@ function RefundPayment(){
             Reembolso realizado. O cliente receberá <strong>um e-mail de confirmação.</strong>
           </Alert>
           </Collapse>
-        <p>Deseja voltar para Página Inicial? Clique <Link to="/admin">aqui </Link></p>
+        <p>Deseja voltar para Página Inicial? Clique <Link to="/admin/dashboard">aqui </Link></p>
         <Footer/>
       </>
     )
@@ -277,7 +277,7 @@ function Solicitation(){
           <b>Código do Pagamento:</b> {req.paymentId}<br/>
           <b>Valor:</b> R${req.amount}
         </li>)}
-        <p>Deseja voltar para Página Inicial? Clique <Link to="/admin">aqui </Link></p>
+        <p>Deseja voltar para Página Inicial? Clique <Link to="/admin/dashboard">aqui </Link></p>
         <Footer/>
       </>
   )

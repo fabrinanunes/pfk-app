@@ -144,7 +144,7 @@ function NewFlight(){
             O vôo foi adicionado com <strong>sucesso.</strong>
           </Alert>
           </Collapse>
-        <p>Deseja voltar para Página Inicial? Clique <Link to="/admin">aqui </Link></p>
+        <p>Deseja voltar para Página Inicial? Clique <Link to="/admin/dashboard">aqui </Link></p>
         <Footer/>
         </>
     )
@@ -164,8 +164,6 @@ function ListFlights(){
 
     return(
         <>
-        <h3>Vôos disponíveis</h3>
-        <p><Link to='/register'>Registre-se</Link> ou faça <Link to="/login">login</Link> para realizar a compra</p>
             {flights.map(flight => 
                 <li className="list-group-item" key={flight._id}>
                     <Card sx={{ minWidth: 275 }}>
@@ -190,48 +188,16 @@ function ListFlights(){
             )}
         </>
     )
-}
+};
 
 function ListFlightsAdmin(){
-    const [flights, setFlights] = useState([]);
-
-    async function getFlights(){
-      const { data } = await list();
-      setFlights(data)
-    };
-    
-    useEffect(() => {
-        getFlights()
-    }, []);
-
     return(
         <>
-            <NavBarAdmin/>
-            <h3>Vôos disponíveis</h3>
-                {flights.map(flight => 
-                    <li className="list-group-item" key={flight._id}>
-                        <Card sx={{ minWidth: 275 }}>
-                            <CardContent>
-                                <Typography>
-                                    <b>Vôo:</b> {flight.flight}
-                                </Typography>
-                                <Typography>
-                                    <b>Partida:</b> {flight.departureAirport} <br/>
-                                    <b>Data:</b> {flight.depatureDate} - {flight.depatureTime} <br/>
-                                </Typography>
-                                <Typography>
-                                    <b>Destino:</b> {flight.arrivalAirport} <br/>
-                                    <b>Data:</b> {flight.arrivalDate} - {flight.arrivalTime} <br/>
-                                </Typography>
-                                <Typography>
-                                    <b>Preço:</b> {flight.amount} <br/>
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    </li>
-                )}
-            <Footer/>
-            </>
+        <NavBarAdmin />
+        <h1>Vôos disponíveis</h1>
+        <ListFlights/>
+        <Footer/>
+        </>
     )
 }
 

@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import { NavBarClient, NavBarAdmin } from './components/nav'
 import { Footer } from './components/footer'
-import { Flights, NewFlight } from './Flights'
+import { Flights } from './Flights'
 
 function AdminDashboard() {
   const history = useHistory();
@@ -34,8 +34,8 @@ function AdminDashboard() {
     history.push("/admin/flights");
   }
 
-  function handleNewFlights(){
-    history.push("/admin/fligths/new");
+  function handleNewFlight(){
+    history.push("/admin/flights/new");
   }
 
   return (
@@ -81,7 +81,7 @@ function AdminDashboard() {
         <b>Vôos</b>
         <li className="list-group-item">
           Adicionar novo intinerário
-          <Button type="submit" onClick={handleNewFlights}>
+          <Button type="submit" onClick={handleNewFlight}>
             Ir
           </Button>
         </li>
@@ -95,7 +95,7 @@ function AdminDashboard() {
     <Footer/>
     </>
   );
-}
+};
 
 function ClientDashboard() {
   const history = useHistory();
@@ -131,6 +131,6 @@ function ClientDashboard() {
       <Footer/>
     </>
   );
-}
+};
 
 export { AdminDashboard, ClientDashboard };

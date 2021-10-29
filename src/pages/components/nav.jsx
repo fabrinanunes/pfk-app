@@ -1,4 +1,5 @@
 import { useHistory } from "react-router-dom";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 function NavBarClient(){
     const history = useHistory();
@@ -13,6 +14,10 @@ function NavBarClient(){
 
     function CheckStatus() {
         history.push("/charges/check-charge");
+    }
+
+    function Profile() {
+        history.push("/profile");
     }
 
     return(
@@ -32,7 +37,11 @@ function NavBarClient(){
                     </li>
                 </ul>
                 </div>
-                <p>Profile</p>
+                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li className="nav-item">
+                        <button className="nav-link btn btn-link" onClick={Profile}><AccountCircleIcon />Profile</button>
+                    </li>
+                </ul>
             </div>
         </nav>
     )

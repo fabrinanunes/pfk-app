@@ -20,4 +20,5 @@ async function newAdmin(obj){
     return newAdmin
 }
 
+
 export { clientLogin, adminLogin, newClient, newAdmin }
