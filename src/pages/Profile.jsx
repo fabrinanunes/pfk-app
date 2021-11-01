@@ -46,12 +46,12 @@ function Profile(){
         <>
             <NavBarClient />
             <h1>Profile</h1>
-                <h2><AssignmentIndIcon/> Seus dados</h2>
+                <h2><AssignmentIndIcon /> Seus dados</h2>
                   {profileData.map(req => 
                   <li className="list-group-item" key={req._id}>
                     <b>Nome:</b> {req.name} <br/>
                     <b>E-mail:</b> {req.email}<br/>
-                  </li>)}
+                  </li>)}<br/>
                   <h4><CreditCardIcon />Cartões:</h4>
                     {card.map(req => 
                     <li className="list-group-item" key={req._id}>
@@ -60,13 +60,13 @@ function Profile(){
                     </li>)}
                   <br/>
                 <h2> <FlightTakeoffIcon/> Seus vôos</h2>
+                <span>Total: <strong>{list.length}</strong></span>
                 {list.map(req => 
                 <li className="list-group-item" key={req._id}>
                   <b>Código do Pagamento:</b> {req._id} <br/>
                   <b>Vôo:</b> {req.flight} <br/>
                   <b>Valor:</b> R$ {req.amount} <br/>
                 </li>)}
-                <span>Total de itens: <strong>{list.length}</strong></span>
             <Footer />
         </> 
     )

@@ -233,13 +233,13 @@ function ReqRefund(){
   return(
       <>
       <NavBarClient/>
-      <h1>Solicitar Reembolso</h1>
+      <h1>Histórico de Compras</h1>
       {list.map(req => 
         <li className="list-group-item" key={req._id}>
           <b>Código do Pagamento:</b> {req._id} <br/>
           <b>Vôo:</b> {req.flight} <br/>
           <b>Valor:</b> R$ {req.amount} <br/>
-          <button type="submit" className="btn btn-primary" onClick={paymentRefund} data-id={req.paymentId} data-price={req.amount}>Solicitar Reembolso</button>
+          <button type="submit" id='botao' className="btn btn-primary" onClick={paymentRefund} data-id={req.paymentId} data-price={req.amount}>Solicitar Reembolso</button>
         </li>)}
       <Collapse in={open}>
           <Alert 

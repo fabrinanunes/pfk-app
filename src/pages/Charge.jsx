@@ -154,7 +154,7 @@ function CheckStatusClient(){
     useEffect(() => {
       getList();
     }, []);
-
+    
     async function getCharge(event){
       const id = event.target.getAttribute("data-id");
       const { data } = await check(id)
@@ -164,7 +164,7 @@ function CheckStatusClient(){
     return(
         <>
         <NavBarClient/>
-        <h1>Verificar Cobrança:</h1>
+        <h1>Verificar Cobrança</h1>
         {list.map(req => 
         <li className="list-group-item" key={req._id}>
           <b>Código:</b> {req._id} <br/>

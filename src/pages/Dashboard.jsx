@@ -43,51 +43,50 @@ function AdminDashboard() {
     <NavBarAdmin/>
       <h1>Dashboard - Admin</h1>
       <h3>O que deseja fazer?</h3>
-      <ul className="list-group">
+      <ul className="list-group-flush">
         <b>Geral</b>
-        <li className="list-group-item">
+        <li className="list-group-item dashboard">
           Consultar saldo
           <Button type="submit" onClick={handleCheckBalance}>
             Ir
           </Button>
         </li>
         <b>Cobranças</b>
-        <li className="list-group-item">
+        <li className="list-group-item dashboard">
           Consultar cobrança
           <Button type="submit" onClick={handleCheckCharge}>
             Ir
           </Button>
         </li>
-        <li className="list-group-item">
+        <li className="list-group-item dashboard">
           Listar todas as cobranças
           <Button type="submit" onClick={handleChargesList}>
             Ir
           </Button>
         </li>
-        <b>Pagamento</b>
-        <li className="list-group-item">
-          Gerar Reembolso
-          <Button type="submit" onClick={handleRefund}>
-            Ir
-          </Button>
-        </li>
-        <b>Clientes</b>
-        <li className="list-group-item">
+        <b>Reembolso</b>
+        <li className="list-group-item dashboard">
           Verificar solicitações
           <Button type="submit" onClick={handleSolicitations}>
             Ir
           </Button>
         </li>
-        <b>Vôos</b>
-        <li className="list-group-item">
-          Adicionar novo intinerário
-          <Button type="submit" onClick={handleNewFlight}>
+        <li className="list-group-item dashboard">
+          Gerar Reembolso
+          <Button type="submit" onClick={handleRefund}>
             Ir
           </Button>
         </li>
-        <li className="list-group-item">
+        <b>Vôos</b>
+        <li className="list-group-item dashboard">
           Listar intinerários
           <Button type="submit" onClick={handleFlights}>
+            Ir
+          </Button>
+        </li>
+        <li className="list-group-item dashboard">
+          Adicionar novo intinerário
+          <Button type="submit" onClick={handleNewFlight}>
             Ir
           </Button>
         </li>
@@ -113,21 +112,6 @@ function ClientDashboard() {
     <NavBarClient/>
       <h1>Welcome Aboard</h1>
       <Flights />
-      <h3>O que deseja fazer?</h3>
-      <ul className="list-group">
-          <li className="list-group-item">
-            Solicitar Reembolso
-            <Button type="submit" onClick={handleRefund}>
-              Ir
-            </Button>
-          </li>
-          <li className="list-group-item">
-            Consultar Status
-            <Button type="submit" onClick={handleCheckCharge}>
-              Ir
-            </Button>
-          </li>
-      </ul>
       <Footer/>
     </>
   );

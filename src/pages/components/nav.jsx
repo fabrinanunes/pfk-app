@@ -39,7 +39,7 @@ function NavBarClient(){
                 </div>
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                     <li className="nav-item">
-                        <button className="nav-link btn btn-link" onClick={Profile}><AccountCircleIcon />Profile</button>
+                        <button className="nav-link btn btn-link" onClick={Profile}><AccountCircleIcon sx={{ color: '#2b68ad' }}/>Profile</button>
                     </li>
                 </ul>
             </div>

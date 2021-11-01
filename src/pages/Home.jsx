@@ -6,14 +6,19 @@ function Home(){
     
   return(
     <>
-      <h1>
-          No name Airlines
-      </h1>
+      <div id="title">
+        <h1>Holidays Airlines</h1>
+        <span>#1 World's Airline Company by New York Times</span>
+      </div>
       <div className="row" id='home'>
-        <h2>Primeira vez por aqui?</h2>
+        <div className="col home">
+          <h3>Primeira vez por aqui?</h3>
           <p>Faça seu registro <Link to="/register">aqui</Link></p>
-        <h2>Já possui cadastro?</h2>
+        </div>
+        <div className="col home">
+          <h3>Já possui cadastro?</h3>
           <p>Faça seu <Link to="/login">Login</Link></p>
+        </div>
       </div>
       <hr/>
       <h3>Vôos disponíveis</h3>
