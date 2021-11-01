@@ -44,30 +44,30 @@ function Profile(){
 
     return(
         <>
-            <NavBarClient />
-            <h1>Profile</h1>
-                <h2><AssignmentIndIcon /> Seus dados</h2>
-                  {profileData.map(req => 
-                  <li className="list-group-item" key={req._id}>
-                    <b>Nome:</b> {req.name} <br/>
-                    <b>E-mail:</b> {req.email}<br/>
-                  </li>)}<br/>
-                  <h4><CreditCardIcon />Cartões:</h4>
-                    {card.map(req => 
-                    <li className="list-group-item" key={req._id}>
-                      <b>Últimos 04 dígitos:</b> {req.last4CardNumber} <br/>
-                      <b>Data de Expiração:</b> {req.expirationMonth}/{req.expirationYear} <br/>
-                    </li>)}
-                  <br/>
-                <h2> <FlightTakeoffIcon/> Seus vôos</h2>
-                <span>Total: <strong>{list.length}</strong></span>
-                {list.map(req => 
+          <NavBarClient />
+          <h2>Profile</h2>
+            <h3><AssignmentIndIcon />Personal Info</h3>
+              {profileData.map(req => 
+              <li className="list-group-item" key={req._id}>
+                <b>Name:</b> {req.name} <br/>
+                <b>Email:</b> {req.email}<br/>
+              </li>)}<br/>
+              <h3><CreditCardIcon />Saved Cards:</h3>
+                {card.map(req => 
                 <li className="list-group-item" key={req._id}>
-                  <b>Código do Pagamento:</b> {req._id} <br/>
-                  <b>Vôo:</b> {req.flight} <br/>
-                  <b>Valor:</b> R$ {req.amount} <br/>
+                  <b>Card Number:</b> {req.last4CardNumber} <br/>
+                  <b>Expiration Date:</b> {req.expirationMonth}/{req.expirationYear} <br/>
                 </li>)}
-            <Footer />
+              <br/>
+            <h3> <FlightTakeoffIcon/>Your Flights</h3>
+            <span>TOTAL: <strong>{list.length}</strong></span>
+            {list.map(req => 
+            <li className="list-group-item" key={req._id}>
+              <b>Payment Code:</b> {req._id} <br/>
+              <b>Flight Number:</b> {req.flight} <br/>
+              <b>Amount:</b> R$ {req.amount} <br/>
+            </li>)}
+          <Footer />
         </> 
     )
 }

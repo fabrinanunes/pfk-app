@@ -52,7 +52,7 @@ function NewCharge(){
         }
       }
     }
-    console.log(chargeData)
+  
     create(chargeData).then((res) => {
       if (res.status === 200){
         const chargeId = res.data[0].id
@@ -67,45 +67,44 @@ function NewCharge(){
   return(
     <>
     <NavBarClient/>
-      <h1>Viagem do vôo {flightNumber}</h1>
-      <p>Passo 01 de 02 - Dados do Passageiro</p>
+      <h2>Your Flight - {flightNumber}</h2>
+      <p className='form'>01 of 02: Passenger Information</p>
       <form onSubmit={ newCharge }>
         <div className="form-group">
-            <label htmlFor="name">Nome</label>
-            <input type='text' placeholder='Nome Completo' id='name' className="form-control" required/>
+          <label htmlFor="name">Name</label>
+          <input type='text' placeholder='Full Name' id='name' className="form-control" required/>
         </div>
         <div className="form-group">
-            <label htmlFor="document">Documento</label>
-            <input type='text' placeholder='CPF ou CPNJ' id='document' className="form-control" required/>
+          <label htmlFor="document">Identity Documents</label>
+          <input type='text' placeholder='ID' id='document' className="form-control" required/>
         </div>
         <div className="form-group">
-        <p>Dados de Contato</p>
-            <label htmlFor="email">E-mail</label>
-            <input type='mail' placeholder='E-mail' id='email' className="form-control" required/>
+          <label htmlFor="email">Email Address</label>
+          <input type='mail' placeholder='Email Address' id='email' className="form-control" required/>
         </div>
         <div className="form-group">
-            <label htmlFor="postCode">CEP</label>
-            <input type='text' placeholder='88000-000' id='postCode' className="form-control" onBlur={getCEP} required/>
+          <label htmlFor="postCode">Zip Code</label>
+          <input type='text' placeholder='88000000' id='postCode' className="form-control" onBlur={getCEP} required/>
         </div>
         <div className="form-group">
-            <label htmlFor="street">Endereço</label>
-            <input type='text' placeholder='Rua' id='street' className="form-control" required/>
+          <label htmlFor="street">Address</label>
+          <input type='text' placeholder='Street' id='street' className="form-control" required/>
         </div>
         <div className="form-group">
-            <label htmlFor="number">Número</label>
-            <input type='text' placeholder='Casa ou Apartamento' id='number' className="form-control" required/>
+          <label htmlFor="number">Number</label>
+          <input type='text' placeholder='Number' id='number' className="form-control" required/>
         </div>
         <div className="form-group">
-            <label htmlFor="city">Cidade</label>
-            <input type='text' placeholder='Cidade' id='city' className="form-control" required/>
+          <label htmlFor="city">City</label>
+          <input type='text' placeholder='City' id='city' className="form-control" required/>
         </div>
           <div className="form-group">
-            <label htmlFor="state">Estado</label>
-            <input type='text' placeholder='Sigla UF' id='state' maxLength="2" className="form-control" required/>
+          <label htmlFor="state">State</label>
+          <input type='text' placeholder='SC' id='state' maxLength="2" className="form-control" required/>
         </div>
-          <button className="btn btn-primary" type='submit'>Ir para Checkout</button>
+        <button className="btn btn-primary form-btn" type='submit'>Checkout</button>
       </form>
-      <p>Deseja voltar para Página Inicial? Clique <Link to="/dashboard">aqui </Link></p>
+      <p className='previous-page'>Return to the main page? Click <Link to="/dashboard">here</Link></p>
       <Footer/>
     </>
   )
@@ -126,17 +125,15 @@ function ChargesList(){
     return(
       <>
       <NavBarAdmin/>
-        <h1>
-          Listagem das Cobranças
-        </h1>
+        <h2>Charge List</h2>
           {charges.map(charge =>
             <li className="list-group-item" key={charge.id}>
-              <b>Código Cobrança:</b> {charge._id}<br/>
-              <b>Valor:</b> R${charge.amount}
-              <b> Stautus:</b> {charge.status}
-              <b> Data de Pagamento:</b> {charge.dueDate}
+              <b>Code:</b> {charge.code}<br/>
+              <b>Price:</b> R${charge.amount}<br/>
+              <b>Status:</b> {charge.status} <br/>
+              <b>Payment Date:</b> {charge.dueDate}
             </li>)}
-        <p>Voltar para o <Link to="/admin/dashboard">Dashboard</Link></p>
+        <p className='previous-page'>Return to the main page? Click <Link to="/admin/dashboard">here</Link></p>
         <Footer/>
       </>
     )
@@ -164,16 +161,16 @@ function CheckStatusClient(){
     return(
         <>
         <NavBarClient/>
-        <h1>Verificar Cobrança</h1>
+        <h2>Purchase Status</h2>
         {list.map(req => 
         <li className="list-group-item" key={req._id}>
-          <b>Código:</b> {req._id} <br/>
-          <b>Vôo:</b> {req.flight} <br/>
-          <b>Valor:</b> R$ {req.amount} <br/>
+          <b>Code:</b> {req._id} <br/>
+          <b>Flight Number:</b> {req.flight} <br/>
+          <b>Amount:</b> R$ {req.amount} <br/>
           <b>Status:</b> {charge.status} <br/>
-          <button type="submit" className="btn btn-primary" onClick={getCharge} data-id={req.chargeId}>Verificar status</button>
+          <button type="submit" className="btn btn-primary" onClick={getCharge} data-id={req.chargeId}>Check Status</button>
         </li>)}
-        <p>Deseja voltar para Página Inicial? Clique <Link to="/dashboard">aqui </Link></p>
+        <p className='previous-page'>Return to the main page? Click <Link to="/dashboard">here</Link></p>
         <Footer/>
         </>
     )
@@ -191,18 +188,18 @@ function CheckStatusAdmin(){
   return(
       <>
       <NavBarAdmin />
-      <h1>Verificar Cobrança:</h1>
+      <h2>Check Charge</h2>
       <div className="form-group">
-        <label htmlFor="id">Digite aqui o nome do ID da cobrança:</label>
+        <label htmlFor="id">Type Charge ID:</label>
         <input type='text' className="form-control" placeholder='chr_1234567890123456789' id='id' required/>
-        <button className="btn btn-primary" onClick={ getCharge }>Consultar status</button>
+        <button className="btn btn-primary" onClick={ getCharge }>Verify</button>
       </div>
-      <ul className="list-group">
+      <ul className="list-group check-charge">
         <li className="list-group-item"><b>ID:</b> {charge.id}</li>
         <li className="list-group-item"><b>Status:</b> {charge.status}</li>
-        <li className="list-group-item"><b>Valor:</b> R$ {charge.amount}</li>
+        <li className="list-group-item"><b>Price:</b> R$ {charge.amount}</li>
       </ul>
-      <p>Deseja voltar para Página Inicial? Clique <Link to="/admin/dashboard">aqui </Link></p>
+      <p className='previous-page'>Return to the main page? Click <Link to="/admin/dashboard">here</Link></p>
       <Footer/>
       </>
   )

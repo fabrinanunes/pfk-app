@@ -25,6 +25,7 @@ import { NewPayment } from './pages/Payment';
 import { ReqRefund } from './pages/Payment';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { Profile } from './pages/Profile';
+import { ContactUs } from './pages/Contact-Us';
 
 function Routes() {
     return(
@@ -42,6 +43,7 @@ function Routes() {
         <Route path="/payments/refund" component={ReqRefund} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />
         <Route path="/profile" component={Profile} />
+        <Route path="/contact-us" component={ContactUs} />
 
         {/* admin */}
         <Route path="/admin/register" component={NewAdmin} />

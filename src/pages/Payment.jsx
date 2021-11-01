@@ -10,6 +10,7 @@ import Collapse from '@mui/material/Collapse';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { create, saveCard, refund, reqRefund, listUserReq, listReq } from '../services/payments';
+import { postCode } from "../services/cep";
 import { NavBarClient, NavBarAdmin } from './components/nav';
 import { Footer } from './components/footer';
 
@@ -20,7 +21,18 @@ function NewPayment(){
     const [open, setOpen] = React.useState(false);
 
     const chargeId = useCookies('chargeId')[0].chargeId;
-    
+
+    function getCEP(event){
+      event.preventDefault();
+      const cepData = document.getElementById('postCode').value;
+      const cep = { cep: cepData };
+  
+      postCode(cep).then((res) => {
+        document.getElementById('street').value = res.data.end;
+        document.getElementById('city').value = res.data.cidade;
+        document.getElementById('state').value = res.data.uf;
+      })
+    }
     async function handleCreatePayment(data){
       const publicToken = process.env.REACT_APP_PUBLIC_TOKEN
       let checkout = new window.DirectCheckout(publicToken, false);
@@ -83,70 +95,71 @@ function NewPayment(){
       <>
       <NavBarClient/>
         <h1>Checkout</h1>
-        <h4>Passo 02 de 02 - Dados do Comprador</h4>
+        <p className='form'>02 of 02: Billing Information</p>
         <form onSubmit={handleSubmit(handleCreatePayment)}>
           <div className="form-group">
-            <label htmlFor="email">E-mail</label>
-            <input {...register('email')} type='email' className="form-control" placeholder='seuemail@mail.com' id='email' required/>
+            <label htmlFor="email">Email Address</label>
+            <input {...register('email')} type='email' className="form-control" placeholder='Email Address' id='email' required/>
           </div>
           <div className="form-group">
-            <label htmlFor="street">Endereço</label>
-            <input {...register('street')} type='text' className="form-control" placeholder='Rua' id='street' required/>
+            <label htmlFor="postCode">Zip Code</label>
+            <input {...register('postCode')} type='text' className="form-control" placeholder='88000000' id='postCode' onBlur={getCEP} required/>
           </div>
           <div className="form-group">
-            <label htmlFor="number">Número</label>
-            <input {...register('number')} type='text' className="form-control" placeholder='Casa ou Apartamento' id='number' required/>
+            <label htmlFor="street">Address</label>
+            <input {...register('street')} type='text' className="form-control" placeholder='Street' id='street' required/>
           </div>
           <div className="form-group">
-            <label htmlFor="city">Cidade</label>
-            <input {...register('city')} type='text' className="form-control" placeholder='Cidade' id='city' required/>
+            <label htmlFor="number">Number</label>
+            <input {...register('number')} type='text' className="form-control" placeholder='Number' id='number' required/>
           </div>
           <div className="form-group">
-            <label htmlFor="state">Estado</label>
-            <input {...register('state')} type='text' className="form-control" placeholder='Sigla UF' maxLength="2" id='state' required/>
+            <label htmlFor="city">City</label>
+            <input {...register('city')} type='text' className="form-control" placeholder='City' id='city' required/>
           </div>
           <div className="form-group">
-            <label htmlFor="postCode">CEP</label>
-            <input {...register('postCode')} type='text' className="form-control" placeholder='88000-000' id='postCode' required/>
+            <label htmlFor="state">State</label>
+            <input {...register('state')} type='text' className="form-control" placeholder='SC' maxLength="2" id='state' required/>
+          </div>
+        
+          <div className="form-group">
+            <label htmlFor="cardNumber">Card Number</label>
+            <input {...register('cardNumber')} type='text' className="form-control" placeholder='Card Number' id='cardNumber'/>
           </div>
           <div className="form-group">
-            <label htmlFor="cardNumber">Dados do Cartão</label>
-            <input {...register('cardNumber')} type='text' className="form-control" placeholder='Número do Cartão' id='cardNumber'/>
+            <label htmlFor="holderName">Cardholder Name</label>
+            <input {...register('holderName')} type='text' className="form-control" placeholder='Full Name' id='holderName'/>
           </div>
           <div className="form-group">
-            <label htmlFor="holderName">Nome Completo</label>
-            <input {...register('holderName')} type='text' className="form-control" placeholder='Nome que consta no cartão' id='holderName'/>
-          </div>
-          <div className="form-group">
-            <label htmlFor="securityCode">Código de Segurança</label>
+            <label htmlFor="securityCode">CVC Code</label>
             <input {...register('securityCode')} type='text' className="form-control" placeholder='xxx' id='securityCode'/>
           </div>
           <div className="form-group">
-            <label htmlFor="expirationMonth">Mês de Expiração</label>
+            <label htmlFor="expirationMonth">Expiration Month</label>
             <input {...register('expirationMonth')} type='text' className="form-control" placeholder='MM' id='expirationMonth'/>
           </div>
           <div className="form-group">
-            <label htmlFor="expirationYear">Ano de Expiração</label>
+            <label htmlFor="expirationYear">Expiration Year</label>
             <input {...register('expirationYear')} type='text' className="form-control" placeholder='YYYY' id='expirationYear'/>
           </div>
           <div className="form-check">
-            <label className="form-check-label" htmlFor="cardhHash">Salvar o cartão para futuras viagens</label>
+            <label className="form-check-label" htmlFor="cardhHash">Save card for future travels</label>
             <input type="checkbox" className="form-check-input" id="cardHash"/>
           </div>
-            <div>
-              <Link to="/charges">Voltar</Link>
-              <button type='submit' className="btn btn-primary">Pagar</button>
+            <div className='checkout-btn'>
+              <Link to="/charges">Return</Link>
+              <button type='submit' className="btn btn-primary">Payment</button>
             </div>
         </form>
           <Collapse in={open}>
           <Alert 
             severity="success"
           >
-            <AlertTitle>Sucesso</AlertTitle>
-            Pagamento efetuado. Em instantes, você receberá <strong>um e-mail de confirmação.</strong>
+            <AlertTitle>Success</AlertTitle>
+            Payment authorized. Soon you will receive <strong>a confirmation email.</strong>
           </Alert>
           </Collapse>
-        <p>Deseja voltar para Página Inicial? Clique <Link to="/dashboard">aqui </Link></p>
+          <p className='previous-page'>Return to the main page? Click <Link to="/dashboard">here</Link></p>
         <Footer/>
       </>
     )
@@ -174,29 +187,27 @@ function RefundPayment(){
     return(
       <>
       <NavBarAdmin/>
-        <h1>
-            Gerar Reembolso
-        </h1>
+        <h2>Refund</h2>
         <form onSubmit={handleSubmit(paymentRefund)}>
           <div className="form-group">
-            <label htmlFor="id">ID do Pagamento: </label>
-            <input {...register('paymentId')} type='text' placeholder='ID do Pagamento' id='id' className="form-control" required/>
+            <label htmlFor="id">Payment ID:</label>
+            <input {...register('paymentId')} type='text' placeholder='pay_1235875434' id='id' className="form-control" required/>
           </div>
           <div className="form-group">
-            <label htmlFor="amount">Valor a ser reembolsado: </label>
-            <input {...register('amount')} type='number' placeholder='R$ 00,00' id='amount' className="form-control"/>
+            <label htmlFor="amount">Amount:</label>
+            <input {...register('amount')} type='number' placeholder='R$ 0,00' id='amount' className="form-control"/>
           </div>
-          <button className="btn btn-primary" type='submit'>Enviar</button>
+          <button className="btn btn-primary" type='submit'>Refund</button>
         </form>
         <Collapse in={open}>
           <Alert 
             severity="success"
           >
             <AlertTitle>Sucesso</AlertTitle>
-            Reembolso realizado. O cliente receberá <strong>um e-mail de confirmação.</strong>
+            Payment refunded. Customer will receive <strong>a confirmation email.</strong>
           </Alert>
           </Collapse>
-        <p>Deseja voltar para Página Inicial? Clique <Link to="/admin/dashboard">aqui </Link></p>
+          <p className='previous-page'>Return to the main page? Click <Link to="/admin/dashboard">here</Link></p>
         <Footer/>
       </>
     )
@@ -233,23 +244,23 @@ function ReqRefund(){
   return(
       <>
       <NavBarClient/>
-      <h1>Histórico de Compras</h1>
+      <h2>Purchases Historic</h2>
       {list.map(req => 
         <li className="list-group-item" key={req._id}>
-          <b>Código do Pagamento:</b> {req._id} <br/>
-          <b>Vôo:</b> {req.flight} <br/>
-          <b>Valor:</b> R$ {req.amount} <br/>
-          <button type="submit" id='botao' className="btn btn-primary" onClick={paymentRefund} data-id={req.paymentId} data-price={req.amount}>Solicitar Reembolso</button>
+          <b>Code:</b> {req._id} <br/>
+          <b>Flight Number:</b> {req.flight} <br/>
+          <b>Price:</b> R$ {req.amount} <br/>
+          <button type="submit" id='botao' className="btn btn-primary" onClick={paymentRefund} data-id={req.paymentId} data-price={req.amount}>Request Refund</button>
         </li>)}
       <Collapse in={open}>
           <Alert 
             severity="warning"
           >
-            <AlertTitle>Solicitação efetuada.</AlertTitle>
-            Você receberá, <strong>em até 05 dias úteis</strong>, a resposta da solicitação.
+            <AlertTitle>Success!</AlertTitle>
+            You will receive, <strong>within 05 working days</strong>, our Finance Department response.
           </Alert>
           </Collapse>
-      <p>Deseja voltar para Página Inicial? Clique <Link to="/dashboard">aqui </Link></p>
+          <p className='previous-page'>Return to the main page? Click <Link to="/dashboard">here</Link></p>
       <Footer/>
       </>
   )
@@ -270,14 +281,14 @@ function Solicitation(){
   return(
       <>
       <NavBarAdmin/>
-        <h1>Solicitações</h1>
+        <h2>Customers Solicitations</h2>
         {list.map(req => 
         <li className="list-group-item" key={req._id}>
-          <b>Código do Solicitante:</b> {req.user} <br/>
-          <b>Código do Pagamento:</b> {req.paymentId}<br/>
-          <b>Valor:</b> R${req.amount}
+          <b>Customer Code:</b> {req.user} <br/>
+          <b>Payment ID</b> {req.paymentId}<br/>
+          <b>Amount:</b> R${req.amount}
         </li>)}
-        <p>Deseja voltar para Página Inicial? Clique <Link to="/admin/dashboard">aqui </Link></p>
+        <p className='previous-page'>Return to the main page? Click <Link to="/admin/dashboard">here</Link></p>
         <Footer/>
       </>
   )

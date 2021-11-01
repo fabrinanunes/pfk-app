@@ -41,53 +41,52 @@ function AdminDashboard() {
   return (
     <>
     <NavBarAdmin/>
-      <h1>Dashboard - Admin</h1>
-      <h3>O que deseja fazer?</h3>
+      <h1>Dashboard</h1>
       <ul className="list-group-flush">
-        <b>Geral</b>
+        <strong>Geral</strong>
         <li className="list-group-item dashboard">
-          Consultar saldo
+          Check balance
           <Button type="submit" onClick={handleCheckBalance}>
-            Ir
+            GO
           </Button>
         </li>
-        <b>Cobranças</b>
+        <strong>Charges</strong>
         <li className="list-group-item dashboard">
-          Consultar cobrança
+          Check Charge
           <Button type="submit" onClick={handleCheckCharge}>
-            Ir
+          GO
           </Button>
         </li>
         <li className="list-group-item dashboard">
-          Listar todas as cobranças
+          List Charges
           <Button type="submit" onClick={handleChargesList}>
-            Ir
+            GO
           </Button>
         </li>
-        <b>Reembolso</b>
+        <strong>Refund</strong>
         <li className="list-group-item dashboard">
-          Verificar solicitações
+          Check Solicitations
           <Button type="submit" onClick={handleSolicitations}>
-            Ir
+            GO
           </Button>
         </li>
         <li className="list-group-item dashboard">
-          Gerar Reembolso
+          Refund
           <Button type="submit" onClick={handleRefund}>
-            Ir
+            GO
           </Button>
         </li>
-        <b>Vôos</b>
+        <strong>Flight Schedule</strong>
         <li className="list-group-item dashboard">
-          Listar intinerários
+          List Itineraries
           <Button type="submit" onClick={handleFlights}>
-            Ir
+            GO
           </Button>
         </li>
         <li className="list-group-item dashboard">
-          Adicionar novo intinerário
+          Add New Itinerary
           <Button type="submit" onClick={handleNewFlight}>
-            Ir
+            GO
           </Button>
         </li>
       </ul>
@@ -97,16 +96,6 @@ function AdminDashboard() {
 };
 
 function ClientDashboard() {
-  const history = useHistory();
-
-  function handleRefund() {
-    history.push("/payments/refund");
-  }
-
-  function handleCheckCharge() {
-    history.push("/charges/check-charge");
-  }
-
   return (
     <>
     <NavBarClient/>

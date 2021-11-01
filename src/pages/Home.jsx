@@ -1,30 +1,43 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Footer } from './components/footer';
 import { ListFlights } from './Flights';
 
 function Home(){
+  const history = useHistory();
+
+  function singUp() {
+    history.push("/register");
+  }
+
+  function singIn() {
+    history.push("/login");
+  }
     
   return(
     <>
-      <div id="title">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <button id='icon'>
+          H
+        </button>
+        <div className="container-fluid navbar-home col-md-3 text-end">
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <button className="btn btn-light signUp" onClick={singUp}>Sign Up</button>
+            </li>
+            <li className="nav-item">
+              <button className="btn btn-primary" onClick={singIn}>Login</button>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div>
         <h1>Holidays Airlines</h1>
-        <span>#1 World's Airline Company by New York Times</span>
+        <p id='subtitle'>#1 World's Airline Company 2021 by New York Times</p>
       </div>
-      <div className="row" id='home'>
-        <div className="col home">
-          <h3>Primeira vez por aqui?</h3>
-          <p>Faça seu registro <Link to="/register">aqui</Link></p>
-        </div>
-        <div className="col home">
-          <h3>Já possui cadastro?</h3>
-          <p>Faça seu <Link to="/login">Login</Link></p>
-        </div>
-      </div>
-      <hr/>
-      <h3>Vôos disponíveis</h3>
-      <p><Link to='/register'>Registre-se</Link> ou faça <Link to="/login">login</Link> para realizar a compra</p>
+      <h3 className="title">Are you ready for our trip?</h3>
+      <p id='p-home'><Link to='/register'>Sign up</Link> or <Link to="/login">login</Link> to book a flight</p>
+      <h3>Let's Fly</h3>
       <ListFlights/>
-      <hr/>
       <Footer/>
     </>
   )

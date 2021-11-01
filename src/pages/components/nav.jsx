@@ -1,9 +1,17 @@
+import React, { useState, useEffect, useMemo } from "react";
+import Cookies from "universal-cookie";
 import { useHistory } from "react-router-dom";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 function NavBarClient(){
     const history = useHistory();
-
+    const cookies = useMemo(() => new Cookies(), []);
+    const [token, setToken] = useState(null);
+  
+    useEffect(() => {
+      setToken(cookies.get("token"));
+    }, [cookies]);
+    
     function Dashboard() {
         history.push("/dashboard");
     }
@@ -20,6 +28,12 @@ function NavBarClient(){
         history.push("/profile");
     }
 
+    function Signout(){
+        cookies.remove("token");
+        history.push("/");
+        history.go(0);
+    };
+
     return(
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
@@ -30,16 +44,19 @@ function NavBarClient(){
                         <button className="nav-link btn btn-link" onClick={Dashboard}>Dashboard</button>
                     </li>
                     <li className="nav-item">
-                        <button className="nav-link btn btn-link" onClick={Refund}>Solicitar Reembolso</button>
+                        <button className="nav-link btn btn-link" onClick={Refund}>Refund</button>
                     </li>
                     <li className="nav-item">
-                        <button className="nav-link btn btn-link" onClick={CheckStatus}>Status</button>
+                        <button className="nav-link btn btn-link" onClick={CheckStatus}>Purchase Status</button>
                     </li>
                 </ul>
                 </div>
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                     <li className="nav-item">
-                        <button className="nav-link btn btn-link" onClick={Profile}><AccountCircleIcon sx={{ color: '#2b68ad' }}/>Profile</button>
+                        <button className="nav-link btn btn-link" onClick={Profile}><AccountCircleIcon id='profile-icon'/>Profile</button>
+                    </li>
+                    <li className="nav-item">
+                        <button className="nav-link btn btn-link" onClick={Signout}>Sign Out</button>
                     </li>
                 </ul>
             </div>
@@ -51,7 +68,7 @@ function NavBarAdmin(){
     const history = useHistory();
 
     function Dashboard() {
-        history.push("/admin");
+        history.push("/admin/dashboard");
     }
 
     function Balance() {
@@ -92,25 +109,25 @@ function NavBarAdmin(){
                         <button className="nav-link btn btn-link" onClick={Dashboard}>Dashboard</button>
                     </li>
                     <li className="nav-item">
-                        <button className="nav-link btn btn-link" onClick={Balance}>Saldo</button>
+                        <button className="nav-link btn btn-link" onClick={Balance}>Balance</button>
                     </li>
                     <li className="nav-item">
-                        <button className="nav-link btn btn-link" onClick={CheckStatus}>Status</button>
+                        <button className="nav-link btn btn-link" onClick={CheckStatus}>Charge Status</button>
                     </li>
                     <li className="nav-item">
-                        <button className="nav-link btn btn-link" onClick={List}>Lista</button>
+                        <button className="nav-link btn btn-link" onClick={List}>Charges List</button>
                     </li>
                     <li className="nav-item">
-                        <button className="nav-link btn btn-link" onClick={Refund}>Reembolso</button>
+                        <button className="nav-link btn btn-link" onClick={Refund}>Refund</button>
                     </li>
                     <li className="nav-item">
-                        <button className="nav-link btn btn-link" onClick={ClientsReq}>Solicitações</button>
+                        <button className="nav-link btn btn-link" onClick={ClientsReq}>Customer Requests</button>
                     </li>
                     <li className="nav-item">
-                        <button className="nav-link btn btn-link" onClick={ListFlights}>Intinerários</button>
+                        <button className="nav-link btn btn-link" onClick={ListFlights}>Itineraries</button>
                     </li>
                     <li className="nav-item">
-                        <button className="nav-link btn btn-link" onClick={NewFlight}>Adicionar Intinerário</button>
+                        <button className="nav-link btn btn-link" onClick={NewFlight}>Add Itinerary</button>
                     </li>
                 </ul>
                 </div>

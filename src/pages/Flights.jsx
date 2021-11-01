@@ -42,28 +42,28 @@ function Flights(){
 
     return(
         <>
-        <h3>Vôos disponíveis</h3>
+        <h3>Let's Fly</h3>
             {flights.map(flight => 
                 <li className="list-group-item" key={flight._id}>
                 <Card sx={{ minWidth: 275 }}>
                     <CardContent>
                         <Typography>
-                            <b>Vôo:</b> {flight.flight}
+                            <b>Flight Number:</b> {flight.flight}
                         </Typography>
                         <Typography>
-                            <b>Partida:</b> {flight.departureAirport} <br/>
-                            <b>Data:</b> {flight.depatureDate} - {flight.depatureTime} <br/>
+                            <b>Departure:</b> {flight.departureAirport} <br/>
+                            <b>Date:</b> {flight.depatureDate} - {flight.depatureTime} <br/>
                         </Typography>
                         <Typography>
-                            <b>Destino:</b> {flight.arrivalAirport} <br/>
-                            <b>Data:</b> {flight.arrivalDate} - {flight.arrivalTime} <br/>
+                            <b>Arrival:</b> {flight.arrivalAirport} <br/>
+                            <b>Date:</b> {flight.arrivalDate} - {flight.arrivalTime} <br/>
                         </Typography>
                         <Typography>
-                            <b>Preço:</b> {flight.amount} <br/>
+                            <b>Price:</b> {flight.amount} <br/>
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <Button variant="contained" onClick={handleCreateCharge} data-id={flight.flight} data-price={flight.amount}>Comprar</Button>
+                        <Button variant="contained" onClick={handleCreateCharge} data-id={flight.flight} data-price={flight.amount}>Select Flight</Button>
                     </CardActions>
                 </Card>
                 </li>
@@ -100,51 +100,51 @@ function NewFlight(){
     return(
         <>
         <NavBarAdmin/>
-        <h1>Adicionar novo intinerário</h1>
+        <h2>Add Itinerary</h2>
         <form onSubmit={ createFlight }>
             <div className="form-group">
-                <label htmlFor="flight">Nº do Vôo</label>
+                <label htmlFor="flight">Flight Number</label>
                 <input type='text' placeholder='FN 124' id='flight' className="form-control" required/>
             </div>
             <div className="form-group">
-                <label htmlFor="departureAirport">Aeroporto de Partida</label>
-                <input type='text' placeholder='Aeroporto de Partida' id='departureAirport' className="form-control" required/>
+                <label htmlFor="departureAirport">Depature Airport</label>
+                <input type='text' placeholder='Depature Airport' id='departureAirport' className="form-control" required/>
             </div>
             <div className="form-group">
-                <label htmlFor="arrivalAirportl">Aeroporto de Chegada</label>
-                <input type='text' placeholder='Aeroporto de Chegada' id='arrivalAirport' className="form-control" required/>
+                <label htmlFor="arrivalAirportl">Arrival Airport</label>
+                <input type='text' placeholder='Arrival Airport' id='arrivalAirport' className="form-control" required/>
             </div>
             <div className="form-group">
-                <label htmlFor="depatureDate">Data da Partida</label>
+                <label htmlFor="depatureDate">Depature Date</label>
                 <input type='text' placeholder='YYYY/MM/DD' id='depatureDate' className="form-control" required/>
             </div>
             <div className="form-group">
-                <label htmlFor="depatureTime">Data da Chegada</label>
+                <label htmlFor="depatureTime">Arrival Date</label>
                 <input type='text' placeholder='Data da Chegada' id='depatureTime' className="form-control" required/>
             </div>
             <div className="form-group">
-                <label htmlFor="arrivalDate">Horário de Partida</label>
+                <label htmlFor="arrivalDate">Depature Time</label>
                 <input type='text' placeholder='HH:MM' id='arrivalDate' className="form-control" required/>
             </div>
             <div className="form-group">
-                <label htmlFor="arrivalTime">Horário de Chegada</label>
+                <label htmlFor="arrivalTime">Arrival Time</label>
                 <input type='text' placeholder='HH:MM' id='arrivalTime' className="form-control" required/>
             </div>
             <div className="form-group">
-                <label htmlFor="amount">Valor da Passagem</label>
+                <label htmlFor="amount">Price</label>
                 <input type='number' placeholder='R$ 0,00' id='amount' min='1' step="0.01" className="form-control" required/>
             </div>
-            <button className="btn btn-primary" type='submit'>Incluir vôo</button>
+            <button className="btn btn-primary" type='submit'>Add Flight</button>
         </form>
         <Collapse in={open}>
           <Alert 
             severity="success"
           >
             <AlertTitle>Sucesso</AlertTitle>
-            O vôo foi adicionado com <strong>sucesso.</strong>
+            <strong>Success!</strong> The flight is now part of our itinerary.
           </Alert>
           </Collapse>
-        <p>Deseja voltar para Página Inicial? Clique <Link to="/admin/dashboard">aqui </Link></p>
+          <p className='previous-page'>Return to the main page? Click <Link to="/admin/dashboard">here</Link></p>
         <Footer/>
         </>
     )
@@ -169,18 +169,18 @@ function ListFlights(){
                     <Card sx={{ minWidth: 275 }}>
                         <CardContent>
                             <Typography>
-                                <b>Vôo:</b> {flight.flight}
+                                <b>Flight Number:</b> {flight.flight}
                             </Typography>
                             <Typography>
-                                <b>Partida:</b> {flight.departureAirport} <br/>
-                                <b>Data:</b> {flight.depatureDate} - {flight.depatureTime} <br/>
+                                <b>Departure:</b> {flight.departureAirport} <br/>
+                                <b>Date:</b> {flight.depatureDate} - {flight.depatureTime} <br/>
                             </Typography>
                             <Typography>
-                                <b>Destino:</b> {flight.arrivalAirport} <br/>
-                                <b>Data:</b> {flight.arrivalDate} - {flight.arrivalTime} <br/>
+                                <b>Arrival:</b> {flight.arrivalAirport} <br/>
+                                <b>Date:</b> {flight.arrivalDate} - {flight.arrivalTime} <br/>
                             </Typography>
                             <Typography>
-                                <b>Preço:</b> {flight.amount} <br/>
+                                <b>Price:</b> {flight.amount} <br/>
                             </Typography>
                         </CardContent>
                     </Card>
@@ -194,7 +194,7 @@ function ListFlightsAdmin(){
     return(
         <>
         <NavBarAdmin />
-        <h1>Vôos disponíveis</h1>
+        <h2>Avaliable Flights</h2>
         <ListFlights/>
         <Footer/>
         </>

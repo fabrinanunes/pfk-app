@@ -38,47 +38,27 @@ function LoginClient(){
         <main>
                 <Container component="main" maxWidth="xs">
                 <CssBaseline />
-                <Box
-                sx={{ marginTop: 8, display: 'flex', flexDirection: 'column',alignItems: 'center' }}
-                >
-                    <Avatar sx={{ m: 1, bgcolor: '#2b68ad' }}>
+                <Box className='box-singup'>
+                    <Avatar sx={{ m: 1, bgcolor: '#0B5ED7' }}>
                         <LockOutlinedIcon />
                     </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Faça seu Login
-                    </Typography>
+                    <Typography component="h2" variant="h5"> Login </Typography>
                     <Box component="form" onSubmit={handleSubmit(handleSignIn)} noValidate sx={{ mt: 1 }}>
-                    <TextField {...register('email')} 
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                    />
-                    <TextField {...register('password')}
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    />
-                    <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                    >
-                    Login
-                    </Button>
+                    <TextField {...register('email')} margin="normal" required fullWidth 
+                    id="email" 
+                    label="Email Address" 
+                    name="email" 
+                    autoComplete="email" autoFocus />
+                    <TextField {...register('password')} margin="normal" required fullWidth 
+                    id="password" 
+                    label="Password" 
+                    name="password" 
+                    type="password" 
+                    autoComplete="current-password" />
+                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}> Login </Button>
                     </Box>
                 </Box>
-            <p>Deseja voltar para Página Inicial? Clique <Link to="/">aqui </Link></p>
+            <p >Return to the main page? Click <Link to="/">here</Link></p>
             </Container>
             <Footer/>
         </main>
@@ -106,35 +86,21 @@ function LoginAdmin(){
         <main>
                 <Container component="main" maxWidth="xs">
                 <CssBaseline />
-                <Box
-                sx={{
-                    marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}
-                >
-                    <Avatar sx={{ m: 1, bgcolor: '#2b68ad' }}>
+                <Box className="box-singup">
+                    <Avatar sx={{ m: 1, bgcolor: '#0B5ED7' }}>
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Faça seu Login
+                        Login
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit(handleSignIn)} noValidate sx={{ mt: 1 }}>
-                    <TextField {...register('email')} 
-                    margin="normal"
-                    required
-                    fullWidth
+                    <TextField {...register('email')} margin="normal" required fullWidth
                     id="email"
                     label="Email Address"
                     name="email"
-                    autoComplete="email"
-                    autoFocus
+                    autoComplete="email" autoFocus
                     />
-                    <TextField {...register('password')}
-                    margin="normal"
-                    required
-                    fullWidth
+                    <TextField {...register('password')} margin="normal" required fullWidth
                     name="password"
                     label="Password"
                     type="password"
@@ -145,14 +111,7 @@ function LoginAdmin(){
                     control={<Checkbox value="remember" color="primary" />}
                     label="Remember me"
                     /> */}
-                    <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                    >
-                    Login
-                    </Button>
+                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}> Login </Button>
                     {/* <Grid container>
                         <Grid item xs>
                             <Link href="#" variant="body2">
@@ -195,37 +154,33 @@ function NewClient(){
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box className='box-singup'>
-                    <Avatar sx={{ m: 1, bgcolor: '#2b68ad' }}>
+                    <Avatar sx={{ m: 1, bgcolor: '#0B5ED7' }}>
                         <LockOutlinedIcon />
                     </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign up
-                    </Typography>
+                    <Typography component="h2" variant="h5"> Sign up </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit(handleCreateUser)} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
-                                <TextField {...register('name')} autoComplete="name" name="name" required fullWidth id="name" label="Nome Completo" autoFocus />
+                                <TextField {...register('name')} autoComplete="name" name="name" required fullWidth id="name" label="Full name" autoFocus />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField {...register('email')} required fullWidth id="email" label="E-mail" name="email" autoComplete="email"/>
+                                <TextField {...register('email')} required fullWidth id="email" label="Email Address" name="email" autoComplete="email"/>
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField {...register('password')} required fullWidth name="password" label="Senha" type="password" id="password" autoComplete="new-password"/>
+                                <TextField {...register('password')} required fullWidth name="password" label="Password" type="password" id="password" autoComplete="new-password"/>
                             </Grid>
                         </Grid>
                         <div className="form-check">
-                        <label className="form-check-label" htmlFor="newsletter">Aceito receber emails informativos</label>
-                        <input type="checkbox" className="form-check-input" id="newsletter"/>
+                            <label className="form-check-label newsletter" htmlFor="newsletter">Sign up to receive <strong>Holidays Co.</strong> newslettlers and special offer emails.</label>
+                            <input type="checkbox" className="form-check-input" id="newsletter"/>
                         </div>
-                        <p>Ao se registrar, eu concordo com os <Link to='/privacy-policy'>Termos de Uso e Política de Privacidade</Link></p>
-                        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                        Cadastrar-se
-                        </Button>
+                        <p className='newsletter'>By creating an account you are agreeing to the <strong>Holidays Airline</strong> <Link to='/privacy-policy'>programme rules and our privacy policy.</Link></p>
+                        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}> Join now </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <p>Já possui conta? Faça seu <Link to="/login">login</Link></p>
+                                <p>Have an account? <Link to="/login">Login</Link></p>
                             </Grid>
-                            <p>Deseja voltar para Página Inicial? Clique <Link to="/">aqui </Link></p>
+                            <p>Return to the main page? Click <Link to="/">here</Link></p>
                         </Grid>
                     </Box>
                 </Box>
@@ -257,7 +212,7 @@ function NewAdmin(){
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box className='box-singup'>
-                    <Avatar sx={{ m: 1, bgcolor: '#2b68ad' }}>
+                    <Avatar sx={{ m: 1, bgcolor: '#0B5ED7' }}>
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
