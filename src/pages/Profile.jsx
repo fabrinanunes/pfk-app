@@ -4,7 +4,7 @@ import { Footer } from './components/footer';
 import { NavBarClient } from './components/nav';
 
 import { listUserReq } from '../services/payments';
-import { profile, listCards } from '../services/profile';
+import { profile, listCards, deleted } from '../services/profile';
 
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
@@ -42,6 +42,11 @@ function Profile(){
       profileInfo();
     }, []);
 
+    async function deleteAccount(){
+      const deleteAccount = await deleted();
+      console.log(deleteAccount)
+    }
+
     return(
         <>
           <NavBarClient />
@@ -67,6 +72,7 @@ function Profile(){
               <b>Flight Number:</b> {req.flight} <br/>
               <b>Amount:</b> R$ {req.amount} <br/>
             </li>)}
+            <button className="btn btn-primary check-charge" onClick={deleteAccount}>Delete my account</button>
           <Footer />
         </> 
     )

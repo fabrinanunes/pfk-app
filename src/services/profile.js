@@ -10,4 +10,9 @@ async function listCards(){
     return cards
 };
 
-export { profile, listCards}
+async function deleted(){
+    const account = await api.post('delete-account')
+    return account
+};
+
+export { profile, listCards, deleted}

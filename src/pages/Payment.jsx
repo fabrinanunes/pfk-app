@@ -33,6 +33,7 @@ function NewPayment(){
         document.getElementById('state').value = res.data.uf;
       })
     }
+    
     async function handleCreatePayment(data){
       const publicToken = process.env.REACT_APP_PUBLIC_TOKEN
       let checkout = new window.DirectCheckout(publicToken, false);
