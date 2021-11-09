@@ -3,9 +3,6 @@ import { Link, useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
-import Collapse from '@mui/material/Collapse';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -13,6 +10,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import SweetAlert from "sweetalert2";
 
 import { list, create } from "../services/flights";
 import { NavBarAdmin } from './components/nav';
@@ -74,7 +72,6 @@ function Flights(){
 
 function NewFlight(){
     const history = useHistory();
-    const [open, setOpen] = React.useState(false);
 
     async function createFlight(event){
         event.preventDefault();
@@ -89,12 +86,21 @@ function NewFlight(){
             "amount": event.target.amount.value
         }
 
-        create(flight).then((res) => {
-            if(res.status === 200){
-                setOpen(true)
-                setTimeout(() => history.push('/dashboard'), 3000)  
-            }
-        })
+        try{
+            await create(flight)
+            SweetAlert.fire({
+                icon: 'success',
+                title: 'Itinerary Added',
+                text: 'Customers are now able to purchase it!',
+              })
+            setTimeout(() => history.push('/admin/dashboard'), 3000)
+        }catch(error){
+            SweetAlert.fire({
+                icon: 'error',
+                title: 'Try again',
+                text: 'This Flight is already on our itinerary',
+            })
+        }
     }
 
     return(
@@ -136,15 +142,7 @@ function NewFlight(){
             </div>
             <button className="btn btn-primary" type='submit'>Add Flight</button>
         </form>
-        <Collapse in={open}>
-          <Alert 
-            severity="success"
-          >
-            <AlertTitle>Sucesso</AlertTitle>
-            <strong>Success!</strong> The flight is now part of our itinerary.
-          </Alert>
-          </Collapse>
-          <p className='previous-page'>Return to the main page? Click <Link to="/admin/dashboard">here</Link></p>
+        <p className='previous-page'>Return to the main page? Click <Link to="/admin/dashboard">here</Link></p>
         <Footer/>
         </>
     )

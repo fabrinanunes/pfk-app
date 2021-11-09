@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie"
+import Cookies from "universal-cookie";
 
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
@@ -12,8 +13,10 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import SweetAlert from "sweetalert2";
 
-import { clientLogin, adminLogin } from '../services/login-register'
+//import { login } from "../services/api";
+import { clientLogin, adminLogin } from '../services/login-register';
 import { newClient, newAdmin } from '../services/login-register';
 import { Footer } from './components/footer';
 
@@ -26,12 +29,19 @@ function LoginClient(){
         const loginData = {
             "email": data.email,
             "password": data.password
+        };
+
+        try{
+            const res = await clientLogin(loginData);
+            setCookies('token', res.data.token, { path: '/', maxAge: 86400})
+            history.push('/dashboard');
+        }catch(error){
+            SweetAlert.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: 'Email and/or Password Incorrect. Try again!',
+            })
         }
-        
-        const res = await clientLogin(loginData)
-        
-        setCookies('token', res.data.token, { path: '/', maxAge: 86400})
-        history.push('/dashboard')
     };
 
     return (
@@ -67,19 +77,24 @@ function LoginClient(){
 
 function LoginAdmin(){
     const history = useHistory();
-    const [cookies, setCookies] = useCookies([]);
     const { register, handleSubmit } = useForm();
     
     async function handleSignIn(data){
         const loginData = {
             "email": data.email,
             "password": data.password
-        }
+        };
         
-        const res = await adminLogin(loginData)
-
-        setCookies('token', res.data.token, { path: '/', maxAge: 86400});
-        history.push('/admin/dashboard')
+        try{
+            const res = await adminLogin(loginData);
+            history.push('/admin/dashboard');
+        }catch(error){
+            SweetAlert.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: 'Email and/or Password Incorrect. Try again!',
+            })
+        }
     }
 
     return (
@@ -135,22 +150,28 @@ function LoginAdmin(){
 function NewClient(){
     const history = useHistory();
     const { register, handleSubmit } = useForm();
-    const [cookies, setCookies] = useCookies([]);
 
     async function handleCreateUser(data){
         const registerData = {
             "name": data.name,
 	        "email": data.email,
 	        "password": data.password
+        };
+        
+        try{
+            const res = await newClient(registerData);
+            history.push('/dashboard')
+        }catch(error){
+            SweetAlert.fire({
+                icon: 'error',
+                title: 'Registration Failed',
+                text: error.response.data.error,
+            })
         }
-
-        const res = await newClient(registerData)
-        setCookies('token', res.data.token, { path: '/', maxAge: 86400})
-        history.push('/dashboard')
     };
     
     return(
-        <main>
+    <main>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box className='box-singup'>
@@ -192,7 +213,6 @@ function NewClient(){
 
 function NewAdmin(){
     const history = useHistory();
-    const [cookies, setCookies] = useCookies([]);
     const { register, handleSubmit } = useForm();
 
     async function handleCreateUser(data){
@@ -200,11 +220,18 @@ function NewAdmin(){
             "name": data.name,
 	        "email": data.email,
 	        "password": data.password
+        };
+        try{
+            const res = await newAdmin(registerData);
+           // const cookies = new Cookies(login);
+            history.push('/admin');
+        }catch(error){
+            SweetAlert.fire({
+                icon: 'error',
+                title: 'Registration Failed',
+                text: error.response.data.error,
+            })
         }
-
-        const res = await newAdmin(registerData)
-        setCookies('token', res.data.token, { path: '/', maxAge: 86400})
-        history.push('/admin')
     };
     
     return(

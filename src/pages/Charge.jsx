@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import SweetAlert from "sweetalert2";
 
 import { listAll, check, create } from '../services/charges';
 import { listUserReq } from '../services/payments';
@@ -52,14 +53,21 @@ function NewCharge(){
         }
       }
     }
-  
+    
     create(chargeData).then((res) => {
       if (res.status === 200){
-        const chargeId = res.data[0].id
-        setCookies('chargeId', chargeId, { path: '/' })
+        setCookies('chargeId', res.data.id, { path: '/' })
         removeCookies('flight');
         removeCookies('amount');
         history.push('/payments/new-payment')
+      }
+
+      if(res.status !== 200){
+        SweetAlert.fire({
+          icon: 'error',
+          title: 'Erro 404',
+          text: 'Request Failed',
+        })
       }
     })
   }
@@ -112,7 +120,6 @@ function NewCharge(){
 
 function ChargesList(){
     const [charges, setCharges] = useState([]);
-
     async function getCharges(){
       const { data } = await listAll();
       setCharges(data)
@@ -146,6 +153,7 @@ function CheckStatusClient(){
     async function getList(){
       const { data } = await listUserReq();
       setList(data);
+
     }
     
     useEffect(() => {
@@ -154,8 +162,17 @@ function CheckStatusClient(){
     
     async function getCharge(event){
       const id = event.target.getAttribute("data-id");
-      const { data } = await check(id)
-      setCharge(data)
+
+      try{
+        const { data } = await check(id)
+        setCharge(data)
+      }catch(error){
+        SweetAlert.fire({
+          icon: 'error',
+          title: 'Request Failed',
+          text: 'Try again',
+        })
+      }
     }
     
     return(
@@ -181,8 +198,16 @@ function CheckStatusAdmin(){
 
   async function getCharge(){
     const id = document.getElementById('id').value;
-    const { data } = await check(id)
-    setCharge(data)
+    try{
+      const { data } = await check(id)
+      setCharge(data)
+    }catch(error){
+      SweetAlert.fire({
+        icon: 'error',
+        title: 'Wrong Charge ID',
+        text: 'Try again',
+      })
+    }
   }
   
   return(
@@ -195,7 +220,7 @@ function CheckStatusAdmin(){
         <button className="btn btn-primary" onClick={ getCharge }>Verify</button>
       </div>
       <ul className="list-group check-charge">
-        <li className="list-group-item"><b>ID:</b> {charge.id}</li>
+        <li className="list-group-item"><b>ID:</b> {charge.code}</li>
         <li className="list-group-item"><b>Status:</b> {charge.status}</li>
         <li className="list-group-item"><b>Price:</b> R$ {charge.amount}</li>
       </ul>

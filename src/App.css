@@ -141,7 +141,6 @@ input{
     margin-bottom: .6rem;
 }
 
-/* .list-group-flush{
+.list-group-flush{
     padding-left: 0;
-    width: 20%;
-} */
+}

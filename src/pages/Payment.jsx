@@ -8,6 +8,7 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Collapse from '@mui/material/Collapse';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import SweetAlert from "sweetalert2";
 
 import { create, saveCard, refund, reqRefund, listUserReq, listReq } from '../services/payments';
 import { postCode } from "../services/cep";
@@ -52,6 +53,11 @@ function NewPayment(){
             resolve(cardHash)
           }, function(error) {
             reject(error)
+            SweetAlert.fire({
+              icon: 'error',
+              title: 'Purchase failed',
+              text: 'Try again!',
+            })
           });
         })
         return hash;
@@ -79,15 +85,34 @@ function NewPayment(){
         const tokenization = {
           "creditCardHash": paymentData.creditCardDetails.creditCardHash
         }
-        saveCard(tokenization)
+        saveCard(tokenization).then((res) => {
+          if(res.status !== 200){
+            SweetAlert.fire({
+              icon: 'error',
+              title: `Can not save your card information`,
+              text: 'Try again!',
+            })
+          }
+        })
       }
 
       create(paymentData).then((res) => {
         if(res.status === 200){
           removeCookies('chargeId')
           removeCookies('amount')
-          setOpen(true)
-          setTimeout(() => history.push('/dashboard'), 4000)
+          SweetAlert.fire({
+            icon: 'success',
+            title: 'Purchase Succeed',
+            text: 'Fasten your seatbeal!',
+          })
+          history.push('/dashboard')
+        }
+        if(res.status !== 200){
+          SweetAlert.fire({
+            icon: 'error',
+            title: 'Purchase failed',
+            text: 'Try again!',
+          })
         }
       }) 
     };
@@ -168,7 +193,6 @@ function NewPayment(){
 
 function RefundPayment(){
   const history = useHistory();
-  const [open, setOpen] = React.useState(false);
   const { register, handleSubmit } = useForm()
 
   async function paymentRefund(data){
@@ -177,56 +201,59 @@ function RefundPayment(){
       "amount": data.amount
     }
     
-    await refund(id, amount).then((res) => {
-      if(res.status === 200) {
-        setOpen(true)
-        setTimeout(() => history.push('/admin/dashboard'), 3000)
-      }
-    })
+    try{
+      const res = await refund(id, amount)
+      SweetAlert.fire({
+        icon: 'success',
+        title: 'Refund succees',
+        text: 'Customer will receive an e-mail soon',
+      })
+      setTimeout(() => {
+        history.push('/admin/dashboard')
+      }, 3000)
+    }catch(error){
+      SweetAlert.fire({
+        icon: 'error',
+        title: 'Refund failed',
+        text: 'Try again later!'
+      })
+    }
   }
 
-    return(
-      <>
-      <NavBarAdmin/>
-        <h2>Refund</h2>
-        <form onSubmit={handleSubmit(paymentRefund)}>
-          <div className="form-group">
-            <label htmlFor="id">Payment ID:</label>
-            <input {...register('paymentId')} type='text' placeholder='pay_1235875434' id='id' className="form-control" required/>
-          </div>
-          <div className="form-group">
-            <label htmlFor="amount">Amount:</label>
-            <input {...register('amount')} type='number' placeholder='R$ 0,00' id='amount' className="form-control"/>
-          </div>
-          <button className="btn btn-primary" type='submit'>Refund</button>
-        </form>
-        <Collapse in={open}>
-          <Alert 
-            severity="success"
-          >
-            <AlertTitle>Sucesso</AlertTitle>
-            Payment refunded. Customer will receive <strong>a confirmation email.</strong>
-          </Alert>
-          </Collapse>
-          <p className='previous-page'>Return to the main page? Click <Link to="/admin/dashboard">here</Link></p>
-        <Footer/>
-      </>
-    )
+  return(
+    <>
+    <NavBarAdmin/>
+      <h2>Refund</h2>
+      <form onSubmit={handleSubmit(paymentRefund)}>
+        <div className="form-group">
+          <label htmlFor="id">Payment ID:</label>
+          <input {...register('paymentId')} type='text' placeholder='pay_1235875434' id='id' className="form-control" required/>
+        </div>
+        <div className="form-group">
+          <label htmlFor="amount">Amount:</label>
+          <input {...register('amount')} type='number' placeholder='R$ 0,00' id='amount' className="form-control"/>
+        </div>
+        <button className="btn btn-primary" type='submit'>Refund</button>
+      </form>
+      <p className='previous-page'>Return to the main page? Click <Link to="/admin/dashboard">here</Link></p>
+      <Footer/>
+    </>
+  )
 };
 
 function ReqRefund(){
   const [list, setList] = useState([]);
-  const [open, setOpen] = React.useState(false);
   const history = useHistory();
 
   async function getList(){
     const { data } = await listUserReq();
-    setList(data);
+    setList(data)
+
   }
 
   useEffect(() => {
-    getList();
-  }, []);
+    getList()
+  }, [])
   
   async function paymentRefund(event){
     const reqData = {
@@ -234,12 +261,21 @@ function ReqRefund(){
       "amount": event.target.getAttribute("data-price")
     }
     
-    await reqRefund(reqData).then((res) => {
-      if(res.status === 200){
-        setOpen(true)
-        setTimeout(() => history.push('/dashboard'), 4000)
-      }
-    })
+    try{
+      const res = await reqRefund(reqData)
+      SweetAlert.fire({
+        icon: 'success',
+        title: 'Request Succeed',
+        text: 'Our Finances Department will send you a confirmation e-mail withtin 05 working days!',
+      })
+       setTimeout(() => history.push('/dashboard'), 3000) 
+    }catch(error){
+      SweetAlert.fire({
+        icon: 'error',
+        title: 'Request Failed',
+        text: error.response.data.Message,
+      })
+    }
   }
   
   return(
@@ -253,14 +289,6 @@ function ReqRefund(){
           <b>Price:</b> R$ {req.amount} <br/>
           <button type="submit" id='botao' className="btn btn-primary" onClick={paymentRefund} data-id={req.paymentId} data-price={req.amount}>Request Refund</button>
         </li>)}
-      <Collapse in={open}>
-          <Alert 
-            severity="warning"
-          >
-            <AlertTitle>Success!</AlertTitle>
-            You will receive, <strong>within 05 working days</strong>, our Finance Department response.
-          </Alert>
-          </Collapse>
           <p className='previous-page'>Return to the main page? Click <Link to="/dashboard">here</Link></p>
       <Footer/>
       </>
@@ -271,27 +299,27 @@ function Solicitation(){
   const [list, setList] = useState([]);
 
   async function getSolicitations(){
-      const { data } = await listReq();
-      setList(data)
+    const { data } = await listReq();
+    setList(data)
   }
 
   useEffect(() => {
-      getSolicitations()
+    getSolicitations()
   }, [])
 
   return(
-      <>
-      <NavBarAdmin/>
-        <h2>Customers Solicitations</h2>
-        {list.map(req => 
-        <li className="list-group-item" key={req._id}>
-          <b>Customer Code:</b> {req.user} <br/>
-          <b>Payment ID</b> {req.paymentId}<br/>
-          <b>Amount:</b> R${req.amount}
-        </li>)}
-        <p className='previous-page'>Return to the main page? Click <Link to="/admin/dashboard">here</Link></p>
-        <Footer/>
-      </>
+    <>
+    <NavBarAdmin/>
+      <h2>Customers Solicitations</h2>
+      {list.map(req => 
+      <li className="list-group-item" key={req._id}>
+        <b>Customer Code:</b> {req.user} <br/>
+        <b>Payment ID:</b> {req._id}<br/>
+        <b>Amount:</b> R${req.amount}
+      </li>)}
+      <p className='previous-page'>Return to the main page? Click <Link to="/admin/dashboard">here</Link></p>
+      <Footer/>
+    </>
   )
 };
 

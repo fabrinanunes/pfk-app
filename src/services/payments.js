@@ -2,13 +2,11 @@ import api from './api';
 
 async function create(obj){
     const payment = await api.post('/payment', obj);
-    console.log(payment)
     return payment;
 };
 
 async function refund(id, obj){
     const payment = await api.post(`/admin/payment/refund/${id}`, obj);
-    console.log(payment)
     return payment;
 };
 

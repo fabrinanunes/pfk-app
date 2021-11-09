@@ -2,16 +2,13 @@ import React, { useState, useEffect, useMemo } from "react";
 import Cookies from "universal-cookie";
 import { useHistory } from "react-router-dom";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+//import { logout } from "../../services/api";
 
 function NavBarClient(){
     const history = useHistory();
     const cookies = useMemo(() => new Cookies(), []);
     const [token, setToken] = useState(null);
-  
-    useEffect(() => {
-      setToken(cookies.get("token"));
-    }, [cookies]);
-    
+
     function Dashboard() {
         history.push("/dashboard");
     }
@@ -29,6 +26,7 @@ function NavBarClient(){
     }
 
     function Signout(){
+        //const cookies = new Cookies(logout)
         cookies.remove("token");
         history.push("/");
         history.go(0);
