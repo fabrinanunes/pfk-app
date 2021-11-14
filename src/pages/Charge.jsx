@@ -17,7 +17,8 @@ function NewCharge(){
   const [cookies, setCookies, removeCookies] = useCookies([]);
 
   const flightNumber = useCookies('flight')[0].flight;
-  const amount = useCookies('amount')[0].amount
+  const amount = useCookies('amount')[0].amount;
+  const email = useCookies('email')[0].email;
 
   function getCEP(event){
     event.preventDefault();
@@ -43,7 +44,7 @@ function NewCharge(){
       "billing": {
         "name": event.target.name.value,
         "document": event.target.document.value,
-        "email": event.target.email.value,
+        "email": email,
         "address": {
           "street": event.target.street.value,
           "number": event.target.number.value,
@@ -86,10 +87,10 @@ function NewCharge(){
           <label htmlFor="document">Identity Documents</label>
           <input type='text' placeholder='ID' id='document' className="form-control" required/>
         </div>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label htmlFor="email">Email Address</label>
           <input type='mail' placeholder='Email Address' id='email' className="form-control" required/>
-        </div>
+        </div> */}
         <div className="form-group">
           <label htmlFor="postCode">Zip Code</label>
           <input type='text' placeholder='88000000' id='postCode' className="form-control" onBlur={getCEP} required/>

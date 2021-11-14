@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Cookies from "universal-cookie";
+import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 
 import { Footer } from './components/footer';
@@ -20,6 +21,8 @@ function Profile(){
   const [profileData, setProfile] = useState([]);
   const cookies = useMemo(() => new Cookies(), []);
 
+  const userId = useCookies('id')[0].id
+
   async function getList(){
     const { data } = await listUserReq();
     setList(data);
@@ -39,8 +42,8 @@ function Profile(){
   }, []);
 
   async function profileInfo(){
-    const { data } = await profile();
-    setProfile(data);
+    const profileData = await profile(userId);
+    setProfile(profileData.data);
   }
 
   useEffect(() => {
@@ -73,24 +76,20 @@ function Profile(){
   }
 
   return(
-      <>
+    <>
         <NavBarClient />
         <h2>Profile</h2>
           <h3><AssignmentIndIcon />Personal Info</h3>
-            {profileData.map(req => 
-            <li className="list-group-item" key={req._id}>
-              <b>Name:</b> {req.name} <br/>
-              <b>Email:</b> {req.email}<br/>
-            </li>)}<br/>
+              <b>Name:</b> {profileData.name}<br/>
+              <b>Email:</b> {profileData.email}<br/>
             <h3><CreditCardIcon />Saved Cards:</h3>
-              {card.map(req => 
+            {card.map(req => 
               <li className="list-group-item" key={req._id}>
                 <b>Card Number:</b> {req.last4CardNumber} <br/>
                 <b>Expiration Date:</b> {req.expirationMonth}/{req.expirationYear} <br/>
               </li>)}
             <br/>
           <h3> <FlightTakeoffIcon/>Your Flights</h3>
-          <span>TOTAL: <strong>{list.length}</strong></span>
           {list.map(req => 
           <li className="list-group-item" key={req._id}>
             <b>Payment Code:</b> {req._id} <br/>
@@ -99,7 +98,7 @@ function Profile(){
           </li>)}
           <button className="btn btn-primary check-charge" onClick={deleteAccount}>Delete my account</button>
         <Footer />
-      </> 
+    </> 
   )
 }
 

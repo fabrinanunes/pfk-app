@@ -1,6 +1,7 @@
 import { Link, useHistory } from "react-router-dom";
 import { Footer } from './components/footer';
 import { ListFlights } from './Flights';
+import SweetAlert from "sweetalert2";
 
 function Home(){
   const history = useHistory();
@@ -12,11 +13,35 @@ function Home(){
   function singIn() {
     history.push("/login");
   }
+
+  function mainPage(){
+    history.push('/')
+  }
+
+
+  SweetAlert.fire({
+    icon: 'info',
+    title: 'We value your privacy',
+    text: 'We use cookies to help our website function properly. By accepting, you agree to the use of all of these cookies. You can update your preferences by clicking the cookie preferences button',
+    showClass: {
+      popup: 'animate__animated animate__fadeInDown'
+    },
+    hideClass: {
+      popup: 'animate__animated animate__fadeOutUp'
+    },
+    toast: true,
+    width: "100vw",
+    position: "bottom",
+    showCancelButton: true,
+    cancelButtonText: "No",
+    cancelButtonColor: "#cc2323",
+    confirmButtonColor: '#0B5ED7'
+  })
     
   return(
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <button id='icon'>
+        <button id='icon' onClick={mainPage}>
           H
         </button>
         <div className="container-fluid navbar-home col-md-3 text-end">

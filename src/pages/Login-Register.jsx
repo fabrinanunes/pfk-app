@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
-import { useCookies } from "react-cookie"
-import Cookies from "universal-cookie";
+import { useCookies } from "react-cookie";
 
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
@@ -15,7 +14,6 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import SweetAlert from "sweetalert2";
 
-//import { login } from "../services/api";
 import { clientLogin, adminLogin } from '../services/login-register';
 import { newClient, newAdmin } from '../services/login-register';
 import { Footer } from './components/footer';
@@ -34,6 +32,8 @@ function LoginClient(){
         try{
             const res = await clientLogin(loginData);
             setCookies('token', res.data.token, { path: '/', maxAge: 86400})
+            setCookies('id', res.data.user._id, { path: '/', maxAge: 86400})
+            setCookies('email', res.data.user.email, { path: '/', maxAge: 86400})
             history.push('/dashboard');
         }catch(error){
             SweetAlert.fire({
@@ -149,6 +149,7 @@ function LoginAdmin(){
 
 function NewClient(){
     const history = useHistory();
+    const [cookies, setCookies] = useCookies([]);
     const { register, handleSubmit } = useForm();
 
     async function handleCreateUser(data){
@@ -160,6 +161,9 @@ function NewClient(){
         
         try{
             const res = await newClient(registerData);
+            setCookies('token', res.data.token, { path: '/', maxAge: 86400})
+            setCookies('id', res.data.user._id, { path: '/', maxAge: 86400})
+            setCookies('email', res.data.user.email, { path: '/', maxAge: 86400})
             history.push('/dashboard')
         }catch(error){
             SweetAlert.fire({
@@ -195,7 +199,7 @@ function NewClient(){
                             <label className="form-check-label newsletter" htmlFor="newsletter">Sign up to receive <strong>Holidays Co.</strong> newslettlers and special offer emails.</label>
                             <input type="checkbox" className="form-check-input" id="newsletter"/>
                         </div>
-                        <p className='newsletter'>By creating an account you are agreeing to the <strong>Holidays Airline</strong> <Link to='/privacy-policy'>programme rules and our privacy policy.</Link></p>
+                        <p className='newsletter'>By creating an account you are agreeing to the <strong>Holidays Airline</strong> <Link to='/privacy-policy'>our privacy policy</Link> and <Link to='/term-of-use'> our programme rules.</Link></p>
                         <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}> Join now </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>

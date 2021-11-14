@@ -1,7 +1,7 @@
 import api from './api';
 
-async function profile(){
-    const profile = await api.get('profile')
+async function profile(id){
+    const profile = await api.get(`profile/${id}`)
     return profile
 };
 

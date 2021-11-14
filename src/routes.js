@@ -23,7 +23,7 @@ import { Flights } from './pages/Flights';
 import { NewCharge, CheckStatusClient } from './pages/Charge';
 import { NewPayment } from './pages/Payment';
 import { ReqRefund } from './pages/Payment';
-import { PrivacyPolicy } from './pages/PrivacyPolicy';
+import { PrivacyPolicy, TermOfUse } from './pages/PrivacyPolicy';
 import { Profile } from './pages/Profile';
 import { ContactUs } from './pages/Contact-Us';
 
@@ -42,6 +42,7 @@ function Routes() {
         <Route path="/payments/new-payment" component={NewPayment}/>
         <Route path="/payments/refund" component={ReqRefund} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />
+        <Route path="/term-of-use" component={TermOfUse} />
         <Route path="/profile" component={Profile} />
         <Route path="/contact-us" component={ContactUs} />
 

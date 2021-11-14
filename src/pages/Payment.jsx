@@ -4,9 +4,6 @@ import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
-import Collapse from '@mui/material/Collapse';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import SweetAlert from "sweetalert2";
 
@@ -19,9 +16,9 @@ function NewPayment(){
     const history = useHistory();
     const [cookies, removeCookies] = useCookies([])
     const { register, handleSubmit } = useForm();
-    const [open, setOpen] = React.useState(false);
 
     const chargeId = useCookies('chargeId')[0].chargeId;
+    const email = useCookies('email')[0].email;
 
     function getCEP(event){
       event.preventDefault();
@@ -62,11 +59,11 @@ function NewPayment(){
         })
         return hash;
       }
-    
+
       const paymentData = {
         "chargeId": chargeId,
         "billing": {
-          "email": data.email,
+          "email": email,
           "address": {
             "street": data.street,
             "number": data.number,
@@ -76,7 +73,7 @@ function NewPayment(){
           },
           "delayed": false
         },
-        "creditCardDetails":{
+        "creditCardDetails": {
           "creditCardHash": await newCardHash()
         }
       };
@@ -85,6 +82,7 @@ function NewPayment(){
         const tokenization = {
           "creditCardHash": paymentData.creditCardDetails.creditCardHash
         }
+
         saveCard(tokenization).then((res) => {
           if(res.status !== 200){
             SweetAlert.fire({
@@ -123,10 +121,10 @@ function NewPayment(){
         <h1>Checkout</h1>
         <p className='form'>02 of 02: Billing Information</p>
         <form onSubmit={handleSubmit(handleCreatePayment)}>
-          <div className="form-group">
+          {/* <div className="form-group">
             <label htmlFor="email">Email Address</label>
             <input {...register('email')} type='email' className="form-control" placeholder='Email Address' id='email' required/>
-          </div>
+          </div> */}
           <div className="form-group">
             <label htmlFor="postCode">Zip Code</label>
             <input {...register('postCode')} type='text' className="form-control" placeholder='88000000' id='postCode' onBlur={getCEP} required/>
@@ -177,14 +175,6 @@ function NewPayment(){
               <button type='submit' className="btn btn-primary">Payment</button>
             </div>
         </form>
-          <Collapse in={open}>
-          <Alert 
-            severity="success"
-          >
-            <AlertTitle>Success</AlertTitle>
-            Payment authorized. Soon you will receive <strong>a confirmation email.</strong>
-          </Alert>
-          </Collapse>
           <p className='previous-page'>Return to the main page? Click <Link to="/dashboard">here</Link></p>
         <Footer/>
       </>

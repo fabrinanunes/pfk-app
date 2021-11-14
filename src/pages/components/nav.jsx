@@ -27,8 +27,9 @@ function NavBarClient(){
 
     function Signout(){
         //const cookies = new Cookies(logout)
-        cookies.remove("token");
-        history.push("/");
+        cookies.remove('token');
+        cookies.remove('id')
+        history.push('/');
         history.go(0);
     };
 
