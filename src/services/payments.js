@@ -16,17 +16,17 @@ async function saveCard(obj){
 };
 
 async function reqRefund(obj){
-    const refund = await api.post('/payments/refund', obj);
+    const refund = await api.post('payments/refund', obj);
     return refund;
 };
 
 async function listUserReq(){
-    const list = await api.get('/profile/payments')
+    const list = await api.get('profile/payments')
     return list
 }
 
 async function listReq(){
-    const list = await api.get('/admin/solicitation')
+    const list = await api.get('admin/solicitation')
     return list
 };
 

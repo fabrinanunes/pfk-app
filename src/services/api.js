@@ -8,7 +8,8 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((config) => {
   let token = document.cookie.split('=')[1]
-  if (/flight/i.test(token) || /chargeId/i.test(token)) {
+  
+  if (/flight/i.test(token) || /chargeId/i.test(token) || /id/i.test(token) || /email/i.test(token)) {
     token = document.cookie.split('=')[1].split(';')[0]
   };
   
