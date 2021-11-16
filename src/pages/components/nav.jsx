@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import Cookies from "universal-cookie";
 import { useHistory } from "react-router-dom";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-//import { logout } from "../../services/api";
 
 function NavBarClient(){
     const history = useHistory();
     const cookies = useMemo(() => new Cookies(), []);
-    const [token, setToken] = useState(null);
 
     function Dashboard() {
         history.push("/dashboard");
@@ -26,9 +24,8 @@ function NavBarClient(){
     }
 
     function Signout(){
-        //const cookies = new Cookies(logout)
         cookies.remove('token');
-        cookies.remove('id')
+        cookies.remove('chargeId');
         history.push('/');
         history.go(0);
     };
@@ -46,7 +43,7 @@ function NavBarClient(){
                         <button className="nav-link btn btn-link" onClick={Refund}>Refund</button>
                     </li>
                     <li className="nav-item">
-                        <button className="nav-link btn btn-link" onClick={CheckStatus}>Purchase Status</button>
+                        <button className="nav-link btn btn-link" onClick={CheckStatus}>Purchase History</button>
                     </li>
                 </ul>
                 </div>
@@ -64,6 +61,7 @@ function NavBarClient(){
 }
 
 function NavBarAdmin(){
+    const cookies = useMemo(() => new Cookies(), []);
     const history = useHistory();
 
     function Dashboard() {
@@ -79,7 +77,7 @@ function NavBarAdmin(){
     }
     
     function List() {
-        history.push("/admin/charges/list");
+        history.push("/admin/charges/list?page=1");
     }
 
     function Refund() {
@@ -97,6 +95,12 @@ function NavBarAdmin(){
     function NewFlight() {
         history.push("/admin/flights/new");
     }
+
+    function Signout(){
+        cookies.remove('token');
+        history.push('/admin');
+        history.go(0);
+    };
     
     return(
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -127,6 +131,11 @@ function NavBarAdmin(){
                     </li>
                     <li className="nav-item">
                         <button className="nav-link btn btn-link" onClick={NewFlight}>Add Itinerary</button>
+                    </li>
+                </ul>
+                <ul className="navbar-nav mb-2 mb-lg-0 mr-0">
+                    <li className="nav-item">
+                        <button className="nav-link btn btn-link" onClick={Signout}>Sign Out</button>
                     </li>
                 </ul>
                 </div>

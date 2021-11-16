@@ -135,12 +135,20 @@ input{
     margin-top: 1.5rem;
 }
 
+/* ADMIN DASHBOARD */
 .dashboard{
     display: flex;
     justify-content: space-between;
     margin-bottom: .6rem;
+    line-height: 37px;
 }
 
 .list-group-flush{
     padding-left: 0;
+}
+
+/* CHARGE LIST */
+
+#btnList{
+    width: 98%;
 }

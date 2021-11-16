@@ -16,9 +16,11 @@ function NewPayment(){
     const history = useHistory();
     const [cookies, removeCookies] = useCookies([])
     const { register, handleSubmit } = useForm();
-
+    const [number, setNumber] = useState('');
+    const [name, setName] = useState('');
+    const [expiry, setExpiry] = useState('');
+    const [cvc, setCvc] = useState('');
     const chargeId = useCookies('chargeId')[0].chargeId;
-    const email = useCookies('email')[0].email;
 
     function getCEP(event){
       event.preventDefault();
@@ -31,7 +33,7 @@ function NewPayment(){
         document.getElementById('state').value = res.data.uf;
       })
     }
-    
+
     async function handleCreatePayment(data){
       const publicToken = process.env.REACT_APP_PUBLIC_TOKEN
       let checkout = new window.DirectCheckout(publicToken, false);
@@ -63,7 +65,7 @@ function NewPayment(){
       const paymentData = {
         "chargeId": chargeId,
         "billing": {
-          "email": email,
+          "email": data.email,
           "address": {
             "street": data.street,
             "number": data.number,
@@ -103,7 +105,10 @@ function NewPayment(){
             title: 'Purchase Succeed',
             text: 'Fasten your seatbeal!',
           })
-          history.push('/dashboard')
+          setTimeout(() => {
+            history.push('/dashboard')
+          }, 2000);
+          
         }
         if(res.status !== 200){
           SweetAlert.fire({
@@ -121,10 +126,10 @@ function NewPayment(){
         <h1>Checkout</h1>
         <p className='form'>02 of 02: Billing Information</p>
         <form onSubmit={handleSubmit(handleCreatePayment)}>
-          {/* <div className="form-group">
+          <div className="form-group">
             <label htmlFor="email">Email Address</label>
             <input {...register('email')} type='email' className="form-control" placeholder='Email Address' id='email' required/>
-          </div> */}
+          </div>
           <div className="form-group">
             <label htmlFor="postCode">Zip Code</label>
             <input {...register('postCode')} type='text' className="form-control" placeholder='88000000' id='postCode' onBlur={getCEP} required/>
@@ -256,7 +261,7 @@ function ReqRefund(){
       SweetAlert.fire({
         icon: 'success',
         title: 'Request Succeed',
-        text: 'Our Finances Department will send you a confirmation e-mail withtin 05 working days!',
+        text: 'Our Finance Department will send you a confirmation e-mail withtin 05 working days!',
       })
        setTimeout(() => history.push('/dashboard'), 3000) 
     }catch(error){

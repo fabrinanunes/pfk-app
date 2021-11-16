@@ -1,8 +1,8 @@
+import * as React from 'react';
 import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -31,9 +31,8 @@ function LoginClient(){
 
         try{
             const res = await clientLogin(loginData);
-            setCookies('token', res.data.token, { path: '/', maxAge: 86400})
-            setCookies('id', res.data.user._id, { path: '/', maxAge: 86400})
-            setCookies('email', res.data.user.email, { path: '/', maxAge: 86400})
+            setCookies('token', res.data.token, { path: '/', maxAge: 86400});
+            setCookies('id', res.data.user._id, { path: '/', maxAge: 86400});
             history.push('/dashboard');
         }catch(error){
             SweetAlert.fire({
@@ -46,14 +45,14 @@ function LoginClient(){
 
     return (
         <main>
-                <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <Box className='box-singup'>
-                    <Avatar sx={{ m: 1, bgcolor: '#0B5ED7' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h2" variant="h5"> Login </Typography>
-                    <Box component="form" onSubmit={handleSubmit(handleSignIn)} noValidate sx={{ mt: 1 }}>
+            <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box className='box-singup'>
+                <Avatar sx={{ m: 1, bgcolor: '#0B5ED7' }}>
+                    <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h2" variant="h5"> Login </Typography>
+                <Box component="form" onSubmit={handleSubmit(handleSignIn)} noValidate sx={{ mt: 1 }}>
                     <TextField {...register('email')} margin="normal" required fullWidth 
                     id="email" 
                     label="Email Address" 
@@ -66,9 +65,10 @@ function LoginClient(){
                     type="password" 
                     autoComplete="current-password" />
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}> Login </Button>
-                    </Box>
                 </Box>
-            <p >Return to the main page? Click <Link to="/">here</Link></p>
+            </Box>
+            <p>New here? Please <Link to="/register">register now</Link></p>
+            <p>Return to the main page? Click <Link to="/">here</Link></p>
             </Container>
             <Footer/>
         </main>
@@ -77,6 +77,7 @@ function LoginClient(){
 
 function LoginAdmin(){
     const history = useHistory();
+    const [cookies, setCookies] = useCookies([]);
     const { register, handleSubmit } = useForm();
     
     async function handleSignIn(data){
@@ -87,6 +88,7 @@ function LoginAdmin(){
         
         try{
             const res = await adminLogin(loginData);
+            setCookies('token', res.data.token, { path: '/', maxAge: 86400})
             history.push('/admin/dashboard');
         }catch(error){
             SweetAlert.fire({
@@ -163,7 +165,6 @@ function NewClient(){
             const res = await newClient(registerData);
             setCookies('token', res.data.token, { path: '/', maxAge: 86400})
             setCookies('id', res.data.user._id, { path: '/', maxAge: 86400})
-            setCookies('email', res.data.user.email, { path: '/', maxAge: 86400})
             history.push('/dashboard')
         }catch(error){
             SweetAlert.fire({
@@ -218,6 +219,7 @@ function NewClient(){
 function NewAdmin(){
     const history = useHistory();
     const { register, handleSubmit } = useForm();
+    const [cookies, setCookies] = useCookies([]);
 
     async function handleCreateUser(data){
         const registerData = {
@@ -227,7 +229,7 @@ function NewAdmin(){
         };
         try{
             const res = await newAdmin(registerData);
-           // const cookies = new Cookies(login);
+            setCookies('token', res.data.token, { path: '/', maxAge: 86400})
             history.push('/admin');
         }catch(error){
             SweetAlert.fire({
