@@ -20,12 +20,12 @@ export function CheckBalance(){
   return(
     <>
     <NavBarAdmin/>
-      <h1>Verificar Saldo</h1>
-      <ul className="list-group">Seu saldo é de:
+      <h2>Holidays Airline Balance</h2>
+      <ul className="list-group">Current balance:
         <li className="list-group-item">R$ {balance}</li>
       </ul>
-      <p>Voltar para o <Link to="/admin">Dashboard</Link></p>
+      <p className='previous-page'>Return to the main page? Click <Link to="/admin/dashboard">here</Link></p>
       <Footer/>
     </>
-  )
+  ) 
 }
