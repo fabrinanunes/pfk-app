@@ -171,11 +171,11 @@ function ListFlights(){
                             </Typography>
                             <Typography>
                                 <b>Departure:</b> {flight.departureAirport} <br/>
-                                <b>Date:</b> {flight.depatureDate} - {flight.depatureTime} <br/>
+                                <b>Departure Date:</b> {flight.depatureDate} - {flight.depatureTime} <br/>
                             </Typography>
                             <Typography>
                                 <b>Arrival:</b> {flight.arrivalAirport} <br/>
-                                <b>Date:</b> {flight.arrivalDate} - {flight.arrivalTime} <br/>
+                                <b>Arrival Date:</b> {flight.arrivalDate} - {flight.arrivalTime} <br/>
                             </Typography>
                             <Typography>
                                 <b>Price:</b> {flight.amount} <br/>

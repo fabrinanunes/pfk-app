@@ -11,6 +11,7 @@ import { listUserReq } from '../services/payments';
 import { NavBarClient, NavBarAdmin } from './components/nav'
 import { Footer } from './components/footer'
 import { postCode } from "../services/cep";
+import Pagination from "../pages/components/pagination";
 
 function NewCharge(){
   const history = useHistory();
@@ -18,7 +19,6 @@ function NewCharge(){
 
   const flightNumber = useCookies('flight')[0].flight;
   const amount = useCookies('amount')[0].amount;
-  const email = useCookies('email')[0].email;
 
   function getCEP(event){
     event.preventDefault();
@@ -44,7 +44,7 @@ function NewCharge(){
       "billing": {
         "name": event.target.name.value,
         "document": event.target.document.value,
-        "email": email,
+        "email": event.target.email.value,
         "address": {
           "street": event.target.street.value,
           "number": event.target.number.value,
@@ -55,22 +55,19 @@ function NewCharge(){
       }
     }
     
-    create(chargeData).then((res) => {
-      if (res.status === 200){
-        setCookies('chargeId', res.data.id, { path: '/' })
-        removeCookies('flight');
-        removeCookies('amount');
-        history.push('/payments/new-payment')
-      }
-
-      if(res.status !== 200){
-        SweetAlert.fire({
-          icon: 'error',
-          title: 'Erro 404',
-          text: 'Request Failed',
-        })
-      }
-    })
+    try {
+      const charge = await create(chargeData);
+      setCookies('chargeId', charge.data.id, { path: '/' })
+         removeCookies('flight');
+         removeCookies('amount');
+         history.push('/payments/new-payment')
+    } catch (error) {
+      SweetAlert.fire({
+        icon: 'error',
+        title: 'Request Failed!',
+        text: 'Check your informations',
+      })
+    }
   }
 
   return(
@@ -87,10 +84,10 @@ function NewCharge(){
           <label htmlFor="document">Identity Documents</label>
           <input type='text' placeholder='ID' id='document' className="form-control" required/>
         </div>
-        {/* <div className="form-group">
+        <div className="form-group">
           <label htmlFor="email">Email Address</label>
           <input type='mail' placeholder='Email Address' id='email' className="form-control" required/>
-        </div> */}
+        </div>
         <div className="form-group">
           <label htmlFor="postCode">Zip Code</label>
           <input type='text' placeholder='88000000' id='postCode' className="form-control" onBlur={getCEP} required/>
@@ -120,31 +117,40 @@ function NewCharge(){
 }
 
 function ChargesList(){
-    const [charges, setCharges] = useState([]);
-    async function getCharges(){
-      const { data } = await listAll();
-      setCharges(data)
-    };
+  const [charges, setCharges] = useState([]);
+  const {actualPage, setActualPage} = Pagination();
   
-    useEffect(() => {
-      getCharges()
-    }, []);
-  
-    return(
-      <>
-      <NavBarAdmin/>
-        <h2>Charge List</h2>
-          {charges.map(charge =>
-            <li className="list-group-item" key={charge.id}>
-              <b>Code:</b> {charge.code}<br/>
-              <b>Price:</b> R${charge.amount}<br/>
-              <b>Status:</b> {charge.status} <br/>
-              <b>Payment Date:</b> {charge.dueDate}
-            </li>)}
-        <p className='previous-page'>Return to the main page? Click <Link to="/admin/dashboard">here</Link></p>
-        <Footer/>
-      </>
-    )
+  async function getCharges(){
+    const { data } = await listAll(actualPage);
+    setCharges(data)
+  };
+
+  useEffect(() => {
+    getCharges(actualPage)
+  }, [actualPage]);
+
+  return(
+    <>
+    <NavBarAdmin/>
+      <h2>Charge List</h2>
+        {charges.map(charge =>
+          <li className="list-group-item" key={charge.id}>
+            <b>Code:</b> {charge.code}<br/>
+            <b>Price:</b> R${charge.amount}<br/>
+            <b>Status:</b> {charge.status} <br/>
+            <b>Payment Date:</b> {charge.dueDate}
+          </li>)}
+      <div className="d-flex justify-content-center">
+        {Array(15).fill('').map((_, index )=> {
+          return <button class="btn btn-primary mt-2 me-2" key={index} onClick={() => setActualPage(index + 1)}>
+              {index + 1}
+          </button> 
+        })}
+      </div>
+      <p className='previous-page'>Return to the main page? Click <Link to="/admin/dashboard">here</Link></p>
+      <Footer/>
+    </>
+  )
 }
 
 function CheckStatusClient(){
@@ -153,8 +159,7 @@ function CheckStatusClient(){
     
     async function getList(){
       const { data } = await listUserReq();
-      setList(data);
-
+      setList(data)
     }
     
     useEffect(() => {
@@ -179,7 +184,7 @@ function CheckStatusClient(){
     return(
         <>
         <NavBarClient/>
-        <h2>Purchase Status</h2>
+        <h2>Purchase History</h2>
         {list.map(req => 
         <li className="list-group-item" key={req._id}>
           <b>Code:</b> {req._id} <br/>

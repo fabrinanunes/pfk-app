@@ -27,5 +27,5 @@ export function CheckBalance(){
       <p className='previous-page'>Return to the main page? Click <Link to="/admin/dashboard">here</Link></p>
       <Footer/>
     </>
-  )
+  ) 
 }
