@@ -1,4 +1,4 @@
-import api from './api';
+import api from './api-token';
 
 async function create(obj){
     const payment = await api.post('/payment', obj);

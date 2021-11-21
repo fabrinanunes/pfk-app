@@ -32,40 +32,41 @@ function Flights(){
 
     function handleCreateCharge(event) {
         const flightId = event.target.getAttribute("data-id");
-        setCookies('flight', flightId, { path: '/' })
+        setCookies('flight', flightId, { path: '/' });
         const amount = event.target.getAttribute("data-price");
-        setCookies('amount', amount, { path: '/' })
+        setCookies('amount', amount, { path: '/' });
         history.push("/charges");
     }
 
     return(
         <>
         <h3>Let's Fly</h3>
-            {flights.map(flight => 
-                <li className="list-group-item" key={flight._id}>
-                <Card sx={{ minWidth: 275 }}>
-                    <CardContent>
-                        <Typography>
-                            <b>Flight Number:</b> {flight.flight}
-                        </Typography>
-                        <Typography>
-                            <b>Departure:</b> {flight.departureAirport} <br/>
-                            <b>Date:</b> {flight.depatureDate} - {flight.depatureTime} <br/>
-                        </Typography>
-                        <Typography>
-                            <b>Arrival:</b> {flight.arrivalAirport} <br/>
-                            <b>Date:</b> {flight.arrivalDate} - {flight.arrivalTime} <br/>
-                        </Typography>
-                        <Typography>
-                            <b>Price:</b> {flight.amount} <br/>
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <Button variant="contained" onClick={handleCreateCharge} data-id={flight.flight} data-price={flight.amount}>Select Flight</Button>
-                    </CardActions>
-                </Card>
-                </li>
-            )}
+            <div className="flight">
+                {flights.map(flight => 
+                    <li className="list-group-item" key={flight._id}>
+                    <Card>
+                        <img src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80' width='265' height='265'/>
+                        <CardContent sx={{ pb: 0}}>
+                            <Typography>
+                                <b>Flight Number:</b> {flight.flight}
+                            </Typography>
+                            <Typography>
+                                <b>Departure:</b> {flight.departureAirport} <br/>
+                                <b>Date:</b> {flight.depatureDate} - {flight.depatureTime} <br/>
+                            </Typography>
+                            <Typography>
+                                <b>Arrival:</b> {flight.arrivalAirport} <br/>
+                                <b>Date:</b> {flight.arrivalDate} - {flight.arrivalTime} <br/>
+                            </Typography>
+                        </CardContent>
+                        <CardActions className='cart'>
+                            <span id='price'>${flight.amount}</span>
+                            <Button variant="contained" onClick={handleCreateCharge} data-id={flight.flight} data-price={flight.amount}>Add to Cart</Button>
+                        </CardActions>
+                    </Card>
+                    </li>
+                )}
+            </div>
         </>
     )
 };
@@ -162,6 +163,51 @@ function ListFlights(){
 
     return(
         <>
+            <div className="flight">
+                {flights.map(flight => 
+                    <li className="list-group-item" key={flight._id}>
+                    <Card>
+                        <img src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80' width='265' height='265'/>
+                        <CardContent sx={{ pb: 0}}>
+                            <Typography>
+                                <b>Flight:</b> {flight.flight}
+                            </Typography>
+                            <Typography>
+                                <b>Departure:</b> {flight.departureAirport} <br/>
+                                <b>Date:</b> {flight.depatureDate} - {flight.depatureTime} <br/>
+                            </Typography>
+                            <Typography>
+                                <b>Arrival:</b> {flight.arrivalAirport} <br/>
+                                <b>Date:</b> {flight.arrivalDate} - {flight.arrivalTime} <br/>
+                            </Typography>
+                        </CardContent>
+                        <CardActions className='cart'>
+                            <span id='price'>${flight.amount}</span>
+                        </CardActions>
+                    </Card>
+                    </li>
+                )}
+            </div>
+        </>
+    )
+};
+
+function ListFlightsAdmin(){
+    const [flights, setFlights] = useState([]);
+
+    async function getFlights(){
+      const { data } = await list();
+      setFlights(data)
+    };
+    
+    useEffect(() => {
+        getFlights()
+    }, []);
+
+    return(
+        <>
+        <NavBarAdmin />
+        <h2>Avaliable Flights</h2>
             {flights.map(flight => 
                 <li className="list-group-item" key={flight._id}>
                     <Card sx={{ minWidth: 275 }}>
@@ -184,16 +230,6 @@ function ListFlights(){
                     </Card>
                 </li>
             )}
-        </>
-    )
-};
-
-function ListFlightsAdmin(){
-    return(
-        <>
-        <NavBarAdmin />
-        <h2>Avaliable Flights</h2>
-        <ListFlights/>
         <Footer/>
         </>
     )

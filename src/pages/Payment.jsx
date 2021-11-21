@@ -14,12 +14,8 @@ import { Footer } from './components/footer';
 
 function NewPayment(){
     const history = useHistory();
-    const [cookies, removeCookies] = useCookies([])
+    const [cookies, setCookies, removeCookies] = useCookies([])
     const { register, handleSubmit } = useForm();
-    const [number, setNumber] = useState('');
-    const [name, setName] = useState('');
-    const [expiry, setExpiry] = useState('');
-    const [cvc, setCvc] = useState('');
     const chargeId = useCookies('chargeId')[0].chargeId;
 
     function getCEP(event){
@@ -39,12 +35,18 @@ function NewPayment(){
       let checkout = new window.DirectCheckout(publicToken, false);
 
       const cardData = {
-        cardNumber: data.cardNumber,
+        cardNumber: data.cardNumber.split(' ').join(''),
         holderName: data.holderName,
         securityCode: data.securityCode,
         expirationMonth: data.expirationMonth,
         expirationYear: data.expirationYear
       }
+
+      const last4numbers = cardData.cardNumber.slice(cardData.cardNumber.length - 4)
+      setCookies('cardNumber', last4numbers, { path: '/' })
+      setCookies('holderCard', cardData.holderName, { path: '/' })
+      setCookies('expirationMonth', cardData.expirationMonth, { path: '/' })
+      setCookies('expirationYear', cardData.expirationYear, { path: '/' })
 
       async function newCardHash(){
         const hash = await new Promise((resolve, reject) => {

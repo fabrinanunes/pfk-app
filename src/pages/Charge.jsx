@@ -5,6 +5,12 @@ import { useCookies } from "react-cookie";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SweetAlert from "sweetalert2";
 
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+
 import { listAll, check, create } from '../services/charges';
 import { listUserReq } from '../services/payments';
 
@@ -58,9 +64,9 @@ function NewCharge(){
     try {
       const charge = await create(chargeData);
       setCookies('chargeId', charge.data.id, { path: '/' })
-         removeCookies('flight');
-         removeCookies('amount');
-         history.push('/payments/new-payment')
+        //  removeCookies('flight');
+        //  removeCookies('amount');
+      history.push('/payments/new-payment')
     } catch (error) {
       SweetAlert.fire({
         icon: 'error',
@@ -200,9 +206,12 @@ function CheckStatusClient(){
 }
 
 function CheckStatusAdmin(){
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => setOpen(false);
   const [charge, setCharge] = useState([])
 
   async function getCharge(){
+    setOpen(true);
     const id = document.getElementById('id').value;
     try{
       const { data } = await check(id)
@@ -225,11 +234,25 @@ function CheckStatusAdmin(){
         <input type='text' className="form-control" placeholder='chr_1234567890123456789' id='id' required/>
         <button className="btn btn-primary" onClick={ getCharge }>Verify</button>
       </div>
-      <ul className="list-group check-charge">
-        <li className="list-group-item"><b>ID:</b> {charge.code}</li>
-        <li className="list-group-item"><b>Status:</b> {charge.status}</li>
-        <li className="list-group-item"><b>Price:</b> R$ {charge.amount}</li>
-      </ul>
+      <div>
+      <Modal 
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box id='modal'>
+          <Typography id="modal-modal-title" variant="h5" component="h2">
+            CHARGE STATUS
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <li className="list-group-item"><b>ID:</b> {charge.code}</li>
+          <li className="list-group-item"><b>Status:</b> {charge.status}</li>
+          <li className="list-group-item"><b>Price:</b> R$ {charge.amount}</li>
+          </Typography>
+        </Box>
+      </Modal>
+    </div>
       <p className='previous-page'>Return to the main page? Click <Link to="/admin/dashboard">here</Link></p>
       <Footer/>
       </>
