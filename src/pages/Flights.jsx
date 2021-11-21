@@ -1,6 +1,5 @@
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 
 import Card from '@mui/material/Card';

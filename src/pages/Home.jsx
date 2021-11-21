@@ -1,7 +1,9 @@
 import { Link, useHistory } from "react-router-dom";
+
+import SweetAlert from "sweetalert2";
+
 import { Footer } from './components/footer';
 import { ListFlights } from './Flights';
-import SweetAlert from "sweetalert2";
 
 function Home(){
   const history = useHistory();
