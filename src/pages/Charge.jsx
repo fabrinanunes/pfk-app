@@ -1,23 +1,19 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SweetAlert from "sweetalert2";
-
-import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
 import { listAll, check, create } from '../services/charges';
 import { listUserReq } from '../services/payments';
-
+import { postCode } from "../services/cep";
 import { NavBarClient, NavBarAdmin } from './components/nav'
 import { Footer } from './components/footer'
-import { postCode } from "../services/cep";
-import Pagination from "../pages/components/pagination";
+import Pagination from "./components/pagination";
 
 function NewCharge(){
   const history = useHistory();
@@ -64,8 +60,8 @@ function NewCharge(){
     try {
       const charge = await create(chargeData);
       setCookies('chargeId', charge.data.id, { path: '/' })
-        //  removeCookies('flight');
-        //  removeCookies('amount');
+        removeCookies('flight');
+        removeCookies('amount');
       history.push('/payments/new-payment')
     } catch (error) {
       SweetAlert.fire({

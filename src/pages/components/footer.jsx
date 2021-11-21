@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 
 function Footer(){
-
     return(
         <div className="container">
             <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top ">
@@ -11,9 +10,8 @@ function Footer(){
                         <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z"/>
                     </svg>
                 <p className="col-md-4 mb-0 text-muted"><Link to='/contact-us'>Contact Us</Link></p>                   
-
-  </footer>
-</div>
+            </footer>
+        </div>
     )
 }
 

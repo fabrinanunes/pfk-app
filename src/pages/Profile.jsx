@@ -1,26 +1,23 @@
-import React, { useState, useEffect, useMemo } from "react";
-import Cookies from "universal-cookie";
+import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
-
-import { Footer } from './components/footer';
-import { NavBarClient } from './components/nav';
-
-import { listUserReq } from '../services/payments';
-import { profile, listCards, deleted } from '../services/profile';
 
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import SweetAlert from "sweetalert2";
 
+import { Footer } from './components/footer';
+import { NavBarClient } from './components/nav';
+import { listUserReq } from '../services/payments';
+import { profile, listCards, deleted } from '../services/profile';
+
 function Profile(){
   const history = useHistory();
+  const [cookies, removeCookies] = useCookies([])
   const [list, setList] = useState([]);
   const [card, setCards] = useState([]);
   const [profileData, setProfile] = useState([]);
-  const cookies = useMemo(() => new Cookies(), []);
-
   const userId = useCookies('id')[0].id
 
   async function getList(){
@@ -58,9 +55,9 @@ function Profile(){
         title: 'Success',
         text: 'Your account is being deleted!',
       })
-      cookies.remove("token");
-      cookies.remove("amount");
-      cookies.remove("flight");
+      removeCookies("token");
+      removeCookies("amount");
+      removeCookies("flight");
       setTimeout(() => history.push('/'), 3000)
     }catch(error){
       SweetAlert.fire({
@@ -68,9 +65,9 @@ function Profile(){
         title: 'You already requested it',
         text: 'Your account will be deleted any time soon',
       })     
-      cookies.remove("token");
-      cookies.remove("amount");
-      cookies.remove("flight");
+      removeCookies("token");
+      removeCookies("amount");
+      removeCookies("flight");
       setTimeout(() => history.push('/'), 2000) 
     }
   }

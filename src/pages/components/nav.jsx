@@ -1,11 +1,12 @@
-import React, { useMemo } from "react";
-import Cookies from "universal-cookie";
+import React from "react";
 import { useHistory } from "react-router-dom";
+import { useCookies } from "react-cookie";
+
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 function NavBarClient(){
     const history = useHistory();
-    const cookies = useMemo(() => new Cookies(), []);
+    const [cookies, removeCookies] = useCookies([]);
 
     function Dashboard() {
         history.push("/dashboard");
@@ -24,8 +25,8 @@ function NavBarClient(){
     }
 
     function Signout(){
-        cookies.remove('token');
-        cookies.remove('chargeId');
+        removeCookies('token');
+        removeCookies('chargeId');
         history.push('/');
         history.go(0);
     };
@@ -35,17 +36,17 @@ function NavBarClient(){
             <div className="container-fluid">
                 <p className="navbar-brand"><img src="https://cdn-icons-png.flaticon.com/512/149/149446.png" alt="icon-airplane" id="icon-navbar" /></p>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li className="nav-item">
-                        <button className="nav-link btn btn-link" onClick={Dashboard}>Dashboard</button>
-                    </li>
-                    <li className="nav-item">
-                        <button className="nav-link btn btn-link" onClick={Refund}>Refund</button>
-                    </li>
-                    <li className="nav-item">
-                        <button className="nav-link btn btn-link" onClick={CheckStatus}>Purchase History</button>
-                    </li>
-                </ul>
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li className="nav-item">
+                            <button className="nav-link btn btn-link" onClick={Dashboard}>Dashboard</button>
+                        </li>
+                        <li className="nav-item">
+                            <button className="nav-link btn btn-link" onClick={Refund}>Refund</button>
+                        </li>
+                        <li className="nav-item">
+                            <button className="nav-link btn btn-link" onClick={CheckStatus}>Purchase History</button>
+                        </li>
+                    </ul>
                 </div>
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                     <li className="nav-item">
@@ -61,8 +62,8 @@ function NavBarClient(){
 }
 
 function NavBarAdmin(){
-    const cookies = useMemo(() => new Cookies(), []);
     const history = useHistory();
+    const [cookies, removeCookies] = useCookies([]);
 
     function Dashboard() {
         history.push("/admin/dashboard");
@@ -97,8 +98,8 @@ function NavBarAdmin(){
     }
 
     function Signout(){
-        cookies.remove('token');
-        history.push('/admin');
+        removeCookies('token');
+        removeCookies('/admin');
         history.go(0);
     };
     
