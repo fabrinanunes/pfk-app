@@ -31,8 +31,8 @@ function LoginClient(){
 
         try{
             const res = await clientLogin(loginData);
-            setCookies('token', res.data.token, { path: '/', maxAge: 86400});
             setCookies('id', res.data.user._id, { path: '/', maxAge: 86400});
+            setCookies('token', res.data.token, { path: '/', maxAge: 86400});
             history.push('/dashboard');
         }catch(error){
             SweetAlert.fire({
@@ -88,7 +88,7 @@ function LoginAdmin(){
         
         try{
             const res = await adminLogin(loginData);
-            setCookies('token', res.data.token, { path: '/', maxAge: 86400})
+            setCookies('token', res.data.token, { path: '/admin/dashboard', maxAge: 86400})
             history.push('/admin/dashboard');
         }catch(error){
             SweetAlert.fire({
@@ -163,8 +163,8 @@ function NewClient(){
         
         try{
             const res = await newClient(registerData);
-            setCookies('token', res.data.token, { path: '/', maxAge: 86400})
             setCookies('id', res.data.user._id, { path: '/', maxAge: 86400})
+            setCookies('token', res.data.token, { path: '/', maxAge: 86400})
             history.push('/dashboard')
         }catch(error){
             SweetAlert.fire({
@@ -229,7 +229,7 @@ function NewAdmin(){
         };
         try{
             const res = await newAdmin(registerData);
-            setCookies('token', res.data.token, { path: '/', maxAge: 86400})
+            setCookies('token', res.data.token, { path: '/admin/dashboard', maxAge: 86400})
             history.push('/admin');
         }catch(error){
             SweetAlert.fire({

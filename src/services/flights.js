@@ -1,4 +1,5 @@
 import api from './api';
+import apiToken from './api-token';
 
 async function list(){
   const flights = await api.get('flights')
@@ -6,7 +7,7 @@ async function list(){
 }
 
 async function create(obj){
-  const flights = await api.post('flights', obj)
+  const flights = await apiToken.post('flights', obj)
   return flights
 }
 

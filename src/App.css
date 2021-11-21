@@ -4,7 +4,7 @@
 body {
     background-color: #F5F5F5;
     font-family: 'Roboto', sans-serif;
-    margin-left: 2rem;
+    margin: 0 2rem;
 }
 
 h1 {
@@ -97,6 +97,21 @@ input{
     text-align: center;
 }
 
+.flight{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* div li{
+    margin: 0 auto;
+} */
+
+img{
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 15px;
+}
+
 /* LOGIN & REGISTER */
 
 .box-singup{
@@ -112,6 +127,10 @@ input{
 }
 
 /* NAVBAR */
+nav{
+    width: 100%;
+}
+
 #icon-navbar{
     width: 30px;
     height: 30px;
@@ -121,6 +140,25 @@ input{
     color: #0B5ED7;
     width: 30px;
     height: 30px;
+}
+
+/* DASHBOARD */
+.cart{
+    font-size: 1.5rem;
+    margin-left: 0;
+    margin-bottom: 5px;
+}
+
+#price{
+    margin: 0 10px;
+    font-weight: bolder;
+}
+
+#flight{
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 5px;
 }
 
 /* CHECKOUT */
@@ -134,6 +172,18 @@ input{
 .check-charge{
     margin-top: 1.5rem;
 }
+
+#modal{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    background-color: #F5F5F5;
+    border: 2px solid transparent;
+    padding: 15px;
+}
+
 
 /* ADMIN DASHBOARD */
 .dashboard{
