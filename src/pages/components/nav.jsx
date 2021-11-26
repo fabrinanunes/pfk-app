@@ -99,7 +99,7 @@ function NavBarAdmin(){
 
     function Signout(){
         removeCookies('token');
-        removeCookies('/admin');
+        history.push('/admin');
         history.go(0);
     };
     

@@ -109,8 +109,8 @@ function NewFlight(){
         <h2>Add Itinerary</h2>
         <form onSubmit={ createFlight }>
             <div className="form-group">
-                <label htmlFor="flight">Flight Number</label>
-                <input type='text' placeholder='FN 124' id='flight' className="form-control" required/>
+                <label htmlFor="flightNumber">Flight Number</label>
+                <input type='text' placeholder='FN 124' id='flightNumber' className="form-control" required/>
             </div>
             <div className="form-group">
                 <label htmlFor="departureAirport">Depature Airport</label>
