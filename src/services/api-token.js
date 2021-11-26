@@ -11,6 +11,7 @@ axiosInstance.interceptors.request.use((config) => {
 
   if (/;/i.test(token)) {
     token = document.cookie.split("token=")[1].split(";")[0];
+    console.log(token)
   }
   
   if (token){

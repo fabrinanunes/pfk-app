@@ -88,7 +88,7 @@ function LoginAdmin(){
         
         try{
             const res = await adminLogin(loginData);
-            setCookies('token', res.data.token, { path: '/admin/dashboard', maxAge: 86400})
+            setCookies('token', res.data.token, { path: '/', maxAge: 86400})
             history.push('/admin/dashboard');
         }catch(error){
             SweetAlert.fire({
@@ -229,8 +229,8 @@ function NewAdmin(){
         };
         try{
             const res = await newAdmin(registerData);
-            setCookies('token', res.data.token, { path: '/admin/dashboard', maxAge: 86400})
-            history.push('/admin');
+            setCookies('token', res.data.token, { path: '/', maxAge: 86400})
+            history.push('/admin/dashboard');
         }catch(error){
             SweetAlert.fire({
                 icon: 'error',
